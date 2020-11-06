@@ -22,6 +22,10 @@ import { DrawerComponent } from './layout/drawer/drawer.component';
 import { BarberHistoriesComponent } from './barber-histories/barber-histories.component';
 import { ImageFallbackDirective } from './directives/image-fallback.directive';
 import { RatingComponent } from './rating/rating.component';
+import { AuthButtonComponent } from './auth/auth-button/auth-button.component';
+import { UserProfileComponent } from './auth/user-profile/user-profile.component';
+import { AuthModule } from '@auth0/auth0-angular';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -31,12 +35,18 @@ import { RatingComponent } from './rating/rating.component';
     DrawerComponent,
     BarberHistoriesComponent,
     ImageFallbackDirective,
-    RatingComponent
+    RatingComponent,
+    AuthButtonComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    AuthModule.forRoot({
+      domain: environment.auth0Domain,
+      clientId: environment.auth0ClientId
+    }),
     MatFormFieldModule,
     MatInputModule,
     MatNativeDateModule,
