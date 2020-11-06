@@ -6,11 +6,11 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 export class SidenavService {
 
   @Output()
-  onToggle = new EventEmitter<void>();
+  toggleChanged = new EventEmitter<void>();
 
   constructor() { }
 
   toggle(): void {
-    this.onToggle.emit();
+    this.toggleChanged.emit();
   }
 }

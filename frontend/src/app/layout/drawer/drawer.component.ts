@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Subscription } from 'rxjs';
 import { SidenavService } from 'src/app/services/sidenav.service';
 
 @Component({
@@ -7,16 +8,24 @@ import { SidenavService } from 'src/app/services/sidenav.service';
   templateUrl: './drawer.component.html',
   styleUrls: ['./drawer.component.scss']
 })
-export class DrawerComponent implements OnInit {
+export class DrawerComponent implements OnInit, OnDestroy {
 
-  @ViewChild('sidenav') public sidenav: MatSidenav;
+  @ViewChild('sidenav')
+  private sidenav: MatSidenav;
+  private sidenavObserver: Subscription;
 
   constructor(private sideNavSrv: SidenavService) { }
 
   ngOnInit(): void {
-    this.sideNavSrv.onToggle.subscribe(() => {
+    // subscribe to sidenav toggle changed event
+    this.sideNavSrv.toggleChanged.subscribe(() => {
       this.sidenav.toggle();
     });
+  }
+
+  ngOnDestroy(): void {
+    // unsubscribe from sidenav toggle changed event
+    this.sidenavObserver?.unsubscribe();
   }
 
 }

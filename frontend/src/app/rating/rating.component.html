@@ -1,0 +1,6 @@
+<div class="rating-container">
+    <div class="star-container" *ngFor="let star of stars">
+        <span class="star half" [style.width.%]="star.fill">&#9733;</span>
+        <span class="star" [class.full]="star.fill === 100">&#9734;</span>
+    </div>
+</div>

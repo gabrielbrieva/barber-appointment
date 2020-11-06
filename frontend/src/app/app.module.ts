@@ -20,6 +20,8 @@ import { MenubarComponent } from './layout/menubar/menubar.component';
 import { LayoutComponent } from './layout/layout.component';
 import { DrawerComponent } from './layout/drawer/drawer.component';
 import { BarberHistoriesComponent } from './barber-histories/barber-histories.component';
+import { ImageFallbackDirective } from './directives/image-fallback.directive';
+import { RatingComponent } from './rating/rating.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { BarberHistoriesComponent } from './barber-histories/barber-histories.co
     MenubarComponent,
     LayoutComponent,
     DrawerComponent,
-    BarberHistoriesComponent
+    BarberHistoriesComponent,
+    ImageFallbackDirective,
+    RatingComponent
   ],
   imports: [
     BrowserModule,

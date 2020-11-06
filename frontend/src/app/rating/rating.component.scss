@@ -1,0 +1,23 @@
+.rating-container {
+    display: inline-block;
+}
+
+.star-container {
+    position: relative;
+    display: inline-block;
+}
+
+.star {
+    position: relative;
+    display: inline-block;
+    font-size: 1.5em;
+    color: #d67200;
+    line-height: 1em;
+}
+
+.half {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    color: #ffb100;
+}

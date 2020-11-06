@@ -1,3 +1,24 @@
 <mat-card *ngFor="let h of histories" class="history-card">
-    {{h.type}}
+    <div class="header-container">
+        <div class="job-barber">
+            <span class="job-name">{{h.jobName}}</span> by <a href="barber/{{h.barber.id}}" class="barber-name">{{h.barber.name}}</a>
+        </div>
+        <div class="date">{{h.date | date: 'mediumDate'}}</div>
+    </div>
+    <div class="result-container">
+        <div class="img-container">
+            <img class="before-img" src="{{h.beforeImg}}" default="assets/img/barber_before.jpg" />
+            <div class="stage-name">Before</div>
+        </div>
+        <div class="img-container">
+            <img class="after-img" src="{{h.afterImg}}" default="assets/img/barber_after.jpg" />
+            <div class="stage-name">After</div>
+        </div>
+    </div>
+    <div class="review-container">
+        <div class="review-header">
+            <span class="user-name">{{h.userName}}</span> <span class="rating-container">{{h.score || 0}}/5 <app-rating [rate]="h.score || 0" readonly="true"></app-rating></span>
+        </div>
+        <p>{{h.comment}}</p>
+    </div>
 </mat-card>

@@ -2,3 +2,53 @@
     max-width: 400px;
     margin: 16px auto;
 }
+
+.header-container {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+}
+
+.job-barber {
+    flex: 1;
+}
+
+.date {
+    display: flex;
+    text-align: right;
+    color: gray;
+    font-size: 0.8em;
+}
+
+.result-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.stage-name {
+    text-align: center;
+}
+
+.img-container {
+    width: 50%;
+}
+
+.img-container:first-child {
+    border-right: 1px solid #aaa;
+}
+
+.before-img, .after-img {
+    width: 100%;
+}
+
+.review-container {
+    padding: 10px 0;
+}
+
+.review-header {
+    display: flex;
+}
+
+.user-name {
+    flex: 1
+}
