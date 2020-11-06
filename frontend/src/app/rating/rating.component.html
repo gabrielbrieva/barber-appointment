@@ -1,5 +1,5 @@
-<div class="rating-container">
-    <div class="star-container" *ngFor="let star of stars">
+<div class="rating-container" (mouseleave)="reset()">
+    <div class="star-container" *ngFor="let star of stars; index as index" (mouseenter)="enter(index + 1)" (click)="handleClick(index + 1)" [style.cursor]="!readonly ? 'pointer' : 'default'">
         <span class="star half" [style.width.%]="star.fill">&#9733;</span>
         <span class="star" [class.full]="star.fill === 100">&#9734;</span>
     </div>

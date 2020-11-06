@@ -17,7 +17,7 @@
     </div>
     <div class="review-container">
         <div class="review-header">
-            <span class="user-name">{{h.userName}}</span> <span class="rating-container">{{h.score || 0}}/5 <app-rating [rate]="h.score || 0" readonly="true"></app-rating></span>
+            <span class="user-name">{{h.userName}}</span> <span class="rating-container">{{h.score || 0}}/5 <app-rating [rate]="h.score || 0" [readonly]="false"></app-rating></span>
         </div>
         <p>{{h.comment}}</p>
     </div>

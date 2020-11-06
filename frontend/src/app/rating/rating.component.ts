@@ -34,6 +34,23 @@ export class RatingComponent implements OnInit {
     this.update(this.rate);
   }
 
+  handleClick(newRate: number): void {
+    if (!this.readonly) {
+      this.rate = newRate;
+      this.update(this.rate);
+    }
+  }
+
+  enter(rate: number): void {
+    if (!this.readonly) {
+      this.update(rate);
+    }
+  }
+
+  reset(): void {
+    this.update(this.rate);
+  }
+
   private update(rate: number): void {
     this.stars.forEach((context, index) => {
       context.fill = Math.round(Math.max(Math.min(rate - index, 1), 0) * 100);
