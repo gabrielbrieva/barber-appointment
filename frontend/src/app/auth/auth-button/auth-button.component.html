@@ -1,7 +1,14 @@
-<ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
-    <button mat-icon-button (click)="auth.logout({ returnTo: document.location.origin })">
-        Log out
-    </button>
+<ng-container *ngIf="(auth.isAuthenticated$ | async) && (auth.user$ | async) as user; else loggedOut">
+    <img mat-icon-button class="user-picture" src="{{user.picture}}" default="" [matMenuTriggerFor]="menu"/>
+    <mat-menu #menu="matMenu">
+        <div class="user-name-container">
+            <span class="user-name">{{ user.name }}</span>
+        </div>
+        <button mat-menu-item (click)="auth.logout({ returnTo: document.location.origin })">
+            <mat-icon>exit_to_app</mat-icon>
+            Log out
+        </button>
+    </mat-menu>
 </ng-container>
 
 <ng-template #loggedOut>

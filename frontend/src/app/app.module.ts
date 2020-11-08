@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { MenubarComponent } from './layout/menubar/menubar.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -25,7 +26,6 @@ import { RatingComponent } from './rating/rating.component';
 import { AuthButtonComponent } from './auth/auth-button/auth-button.component';
 import { UserProfileComponent } from './auth/user-profile/user-profile.component';
 import { AuthModule } from '@auth0/auth0-angular';
-import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -44,8 +44,8 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     BrowserAnimationsModule,
     AuthModule.forRoot({
-      domain: environment.auth0Domain,
-      clientId: environment.auth0ClientId
+      domain: 'dev-saet8-p4.us.auth0.com',
+      clientId: 'tX1gTsitn6nUlpf4hbqRMR45DpS4Kw8z'
     }),
     MatFormFieldModule,
     MatInputModule,
@@ -56,7 +56,8 @@ import { environment } from '../environments/environment';
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
