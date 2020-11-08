@@ -26,6 +26,9 @@ import { RatingComponent } from './rating/rating.component';
 import { AuthButtonComponent } from './auth/auth-button/auth-button.component';
 import { UserProfileComponent } from './auth/user-profile/user-profile.component';
 import { AuthModule } from '@auth0/auth0-angular';
+import { AppointmentItemComponent } from './appointment/appointment-item/appointment-item.component';
+import { AppointmentListComponent } from './appointment/appointment-list/appointment-list.component';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -37,15 +40,17 @@ import { AuthModule } from '@auth0/auth0-angular';
     ImageFallbackDirective,
     RatingComponent,
     AuthButtonComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    AppointmentItemComponent,
+    AppointmentListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AuthModule.forRoot({
-      domain: 'dev-saet8-p4.us.auth0.com',
-      clientId: 'tX1gTsitn6nUlpf4hbqRMR45DpS4Kw8z'
+      domain: environment.auth0Domain,
+      clientId: environment.auth0ClientId
     }),
     MatFormFieldModule,
     MatInputModule,
