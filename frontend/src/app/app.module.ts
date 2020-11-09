@@ -16,6 +16,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
 
 import { MenubarComponent } from './layout/menubar/menubar.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -29,6 +31,8 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { AppointmentItemComponent } from './appointment/appointment-item/appointment-item.component';
 import { AppointmentListComponent } from './appointment/appointment-list/appointment-list.component';
 import { environment } from 'src/environments/environment';
+import { AppointmentWizardComponent } from './appointment/appointment-wizard/appointment-wizard.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,8 @@ import { environment } from 'src/environments/environment';
     AuthButtonComponent,
     UserProfileComponent,
     AppointmentItemComponent,
-    AppointmentListComponent
+    AppointmentListComponent,
+    AppointmentWizardComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +57,8 @@ import { environment } from 'src/environments/environment';
       domain: environment.auth0Domain,
       clientId: environment.auth0ClientId
     }),
+    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatNativeDateModule,
@@ -62,7 +69,9 @@ import { environment } from 'src/environments/environment';
     MatSidenavModule,
     MatListModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    MatStepperModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

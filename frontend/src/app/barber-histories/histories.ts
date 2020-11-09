@@ -34,5 +34,14 @@ export const Histories: IBarberHistory[] = [
         },
         jobName: 'Shave',
         date: new Date()
+    },
+    {
+        userName: 'John Snow',
+        barber: {
+            id: 'barber01',
+            name: 'The Barber'
+        },
+        jobName: 'Shave',
+        date: new Date()
     }
 ];

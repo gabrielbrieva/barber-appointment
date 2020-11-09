@@ -1,0 +1,56 @@
+<mat-vertical-stepper #stepper linear="true" >
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel><span *ngIf="!formData.jobTypeId">Select your service</span><span *ngIf="formData.jobTypeId">Service: {{formData.jobTypeId}}</span></ng-template>
+            <mat-form-field>
+                <mat-label>Service</mat-label>
+                <mat-select formControlName="firstCtrl" (selectionChange)="stepper.next()" [(ngModel)]="formData.jobTypeId" required>
+                    <mat-option value="Hair Cut">Hair Cut</mat-option>
+                    <mat-option value="Shave">Shave</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <ng-template matStepLabel>
+            <span *ngIf="!formData.barberId">Select your Barber</span>
+            <span *ngIf="formData.barberId">Barber: {{formData.barberId}}</span>
+        </ng-template>
+        <form [formGroup]="secondFormGroup">
+            <mat-form-field>
+                <mat-label>Barber</mat-label>
+                <mat-select formControlName="secondCtrl" (selectionChange)="stepper.next()" [(ngModel)]="formData.barberId" required>
+                    <mat-option value="super-barber">Super Barber</mat-option>
+                    <mat-option value="the-barber">The Barber</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup">
+        <ng-template matStepLabel>
+            <span *ngIf="!formData.date">Choose your appointment date and time</span>
+            <span *ngIf="formData.date">Date Time: {{formData.date | date: 'medium'}}</span>
+        </ng-template>
+        <form [formGroup]="thirdFormGroup">
+            <mat-form-field color="accent" appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="thirdCtrl" (dateChange)="stepper.next()" [(ngModel)]="formData.date" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Checkout</ng-template>
+        <p>Review your appointment</p>
+        <ul>
+            <li>{{formData.barberId}}</li>
+            <li>{{formData.jobTypeId}}</li>
+            <li>{{formData.date}}</li>
+        </ul>
+        <div class="button-row">
+            <button mat-button (click)="stepper.reset()">Cancel</button>
+            <button mat-flat-button color="accent" (click)="createAppointment()">Done!</button>
+        </div>
+    </mat-step>
+</mat-vertical-stepper>
