@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 export interface IStarContext {
   index: number;
@@ -20,6 +20,9 @@ export class RatingComponent implements OnInit {
   @Input()
   rate: number;
 
+  @Output()
+  rateChange = new EventEmitter<number>();
+
   @Input()
   readonly: boolean;
 
@@ -37,6 +40,7 @@ export class RatingComponent implements OnInit {
   handleClick(newRate: number): void {
     if (!this.readonly) {
       this.rate = newRate;
+      this.rateChange.emit(this.rate);
       this.update(this.rate);
     }
   }

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export interface INewAppointment {
   jobTypeId: string;
   barberId: string;
   date: Date;
+  time: string;
 }
 
 @Component({
@@ -14,17 +15,12 @@ export interface INewAppointment {
 })
 export class AppointmentWizardComponent implements OnInit {
 
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  thirdFormGroup: FormGroup;
+  formGroups: FormGroup[];
 
   minDate: Date;
 
-  formData: INewAppointment = {
-    barberId: '',
-    date: undefined,
-    jobTypeId: ''
-  };
+  @Input()
+  formData: INewAppointment;
 
   constructor(private formBuilder: FormBuilder) {
     this.minDate = new Date();
@@ -32,17 +28,29 @@ export class AppointmentWizardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.firstFormGroup = this.formBuilder.group({
-      firstCtrl: ['', Validators.required]
-    });
+    if (!this.formData) {
+      this.formData = {
+        jobTypeId: '',
+        barberId: '',
+        date: undefined,
+        time: ''
+      };
+    }
 
-    this.secondFormGroup = this.formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
-
-    this.thirdFormGroup = this.formBuilder.group({
-      thirdCtrl: ['', Validators.required]
-    });
+    this.formGroups = [
+      this.formBuilder.group({
+        serviceCtrl: ['', Validators.required]
+      }),
+      this.formBuilder.group({
+        barberCtrl: ['', Validators.required]
+      }),
+      this.formBuilder.group({
+        dateCtrl: ['', Validators.required]
+      }),
+      this.formBuilder.group({
+        timeCtrl: ['', Validators.required]
+      })
+    ];
   }
 
   createAppointment(): void {

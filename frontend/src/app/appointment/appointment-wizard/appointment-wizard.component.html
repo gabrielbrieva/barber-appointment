@@ -1,53 +1,66 @@
 <mat-vertical-stepper #stepper linear="true" >
-    <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel><span *ngIf="!formData.jobTypeId">Select your service</span><span *ngIf="formData.jobTypeId">Service: {{formData.jobTypeId}}</span></ng-template>
+    <mat-step [stepControl]="formGroups[0]">
+        <form [formGroup]="formGroups[0]">
+            <ng-template matStepLabel>
+                <span *ngIf="!formData.jobTypeId">Select your service</span>
+                <span *ngIf="formData.jobTypeId">Service: <span class="step-value">{{formData.jobTypeId}}</span></span>
+            </ng-template>
             <mat-form-field>
                 <mat-label>Service</mat-label>
-                <mat-select formControlName="firstCtrl" (selectionChange)="stepper.next()" [(ngModel)]="formData.jobTypeId" required>
+                <mat-select formControlName="serviceCtrl" (selectionChange)="stepper.next()" [(ngModel)]="formData.jobTypeId" required>
                     <mat-option value="Hair Cut">Hair Cut</mat-option>
                     <mat-option value="Shave">Shave</mat-option>
                 </mat-select>
             </mat-form-field>
         </form>
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
+    <mat-step [stepControl]="formGroups[1]">
         <ng-template matStepLabel>
             <span *ngIf="!formData.barberId">Select your Barber</span>
-            <span *ngIf="formData.barberId">Barber: {{formData.barberId}}</span>
+            <span *ngIf="formData.barberId">Barber: <span class="step-value">{{formData.barberId}}</span></span>
         </ng-template>
-        <form [formGroup]="secondFormGroup">
+        <form [formGroup]="formGroups[1]">
             <mat-form-field>
                 <mat-label>Barber</mat-label>
-                <mat-select formControlName="secondCtrl" (selectionChange)="stepper.next()" [(ngModel)]="formData.barberId" required>
+                <mat-select formControlName="barberCtrl" (selectionChange)="stepper.next()" [(ngModel)]="formData.barberId" required>
                     <mat-option value="super-barber">Super Barber</mat-option>
                     <mat-option value="the-barber">The Barber</mat-option>
                 </mat-select>
             </mat-form-field>
         </form>
     </mat-step>
-    <mat-step [stepControl]="thirdFormGroup">
+    <mat-step [stepControl]="formGroups[2]">
         <ng-template matStepLabel>
-            <span *ngIf="!formData.date">Choose your appointment date and time</span>
-            <span *ngIf="formData.date">Date Time: {{formData.date | date: 'medium'}}</span>
+            <span *ngIf="!formData.date">Choose your appointment date</span>
+            <span *ngIf="formData.date">Date: <span class="step-value">{{formData.date | date: 'mediumDate'}}</span></span>
         </ng-template>
-        <form [formGroup]="thirdFormGroup">
+        <form [formGroup]="formGroups[2]">
             <mat-form-field color="accent" appearance="fill">
                 <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="thirdCtrl" (dateChange)="stepper.next()" [(ngModel)]="formData.date" required>
+                <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="dateCtrl" (dateChange)="stepper.next()" [(ngModel)]="formData.date" required>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="formGroups[3]">
+        <ng-template matStepLabel>
+            <span *ngIf="!formData.time">Choose your appointment time</span>
+            <span *ngIf="formData.time">Time: <span class="step-value">{{formData.time}}</span></span>
+        </ng-template>
+        <form [formGroup]="formGroups[3]">
+            <mat-form-field>
+                <mat-label>Choose time</mat-label>
+                <mat-select formControlName="timeCtrl" (selectionChange)="stepper.next()" [(ngModel)]="formData.time" required>
+                    <mat-option value="10:30">10:30</mat-option>
+                    <mat-option value="11:30">11:30</mat-option>
+                </mat-select>
             </mat-form-field>
         </form>
     </mat-step>
     <mat-step>
         <ng-template matStepLabel>Checkout</ng-template>
         <p>Review your appointment</p>
-        <ul>
-            <li>{{formData.barberId}}</li>
-            <li>{{formData.jobTypeId}}</li>
-            <li>{{formData.date}}</li>
-        </ul>
         <div class="button-row">
             <button mat-button (click)="stepper.reset()">Cancel</button>
             <button mat-flat-button color="accent" (click)="createAppointment()">Done!</button>
