@@ -2,11 +2,11 @@
 
     <mat-form-field>
         <mat-label>Before Barber</mat-label>
-        <input matInput type="file" />
+        <input #beforeImg type="file" class="ng-hide" />
     </mat-form-field>
     <mat-form-field>
         <mat-label>After Barber</mat-label>
-        <input matInput type="file" />
+        <input #afterImg type="file" class="ng-hide" />
     </mat-form-field>
     <app-rating [rate]="formData.score"></app-rating>
     <mat-form-field>

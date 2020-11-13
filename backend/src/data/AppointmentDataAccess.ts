@@ -1,0 +1,111 @@
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
+import { IAppointmentItem } from "../models/IAppointmentItem";
+import { createLogger } from "../utils/logger";
+import { createDocumentClient } from "./DynamoDB";
+
+const logger = createLogger('AppointmentDataAccess');
+
+export class AppointmentDataAccess {
+
+    private readonly docClient: DocumentClient;
+    private readonly appointmentTableName: string;
+
+    constructor(docClient: DocumentClient = createDocumentClient(), appointmentTableName: string = process.env.APPOINTMENTS_TABLE) {
+        this.docClient = docClient;
+        this.appointmentTableName = appointmentTableName;
+    }
+
+    async getAll(userId: string, appointmentId?: string): Promise<IAppointmentItem[]> {
+        logger.info(`Getting all appointments by user id '${userId}'`);
+
+        let queryInput: DocumentClient.QueryInput  = {
+            TableName: this.appointmentTableName,
+            KeyConditionExpression: 'userId = :userId',
+            ExpressionAttributeValues: {
+                ':userId': userId
+            }
+        }
+
+        if (appointmentId) {
+            logger.info(`Using appointment id '${appointmentId}'`);
+            queryInput.KeyConditionExpression += ' AND appointmentId = :appointmentId';
+            queryInput.ExpressionAttributeValues[':appointmentId'] = appointmentId;
+        }
+
+        const result = await this.docClient.query(queryInput).promise();
+
+        return result.Items as IAppointmentItem[];
+    }
+
+    async create(appointment: IAppointmentItem): Promise<IAppointmentItem> {
+        logger.info(`Creating new Appointment Item: ${JSON.stringify(appointment)}`);
+
+        let result = await this.docClient.put({
+            TableName: this.appointmentTableName,
+            Item: appointment,
+        }).promise();
+
+        if (result.$response.error)
+            logger.info(`Appointment Item NOT created: ${JSON.stringify(result.$response.error)}`);
+        else
+            logger.info(`Appointment Item created: ${JSON.stringify(appointment)}`);
+
+        return appointment;
+    }
+
+    async updateAppointment(appointment: IAppointmentItem): Promise<IAppointmentItem> {
+
+        logger.info(`Updating Appointment Item: ${JSON.stringify(appointment)}`);
+
+        let result = await this.docClient.update({
+            TableName: this.appointmentTableName,
+            Key: {
+                appointmentId: appointment.appointmentId,
+                userId: appointment.userId
+            },
+            UpdateExpression: "set barberId = :barberId, serviceId = :serviceId, date = :date, time = :time, done = :done, score = :score, comment = :comment, beforeImg = :beforeImg, afterImg = :afterImg",
+            ExpressionAttributeValues: {
+                ":barberId": appointment.barberId,
+                ":serviceId": appointment.serviceId,
+                ":date": appointment.date,
+                ":time": appointment.time,
+                ":done": appointment.done || false,
+                ":score": appointment.score || 0,
+                ":comment": appointment.comment || null,
+                ":beforeImg": appointment.beforeImg || null,
+                ":afterImg": appointment.afterImg || null,
+            },
+            ReturnValues: "UPDATED_NEW"
+        }).promise();
+
+        if (result.$response.error)
+            logger.error(`Appointment Item NOT updated: ${JSON.stringify(result.$response.error)}`);
+        else
+            logger.info(`Appointment Item updated: ${JSON.stringify(appointment)}`);
+
+        return appointment;
+    }
+
+    async delete(userId: string, appointmentId: string): Promise<boolean> {
+
+        logger.info(`Deleting Appointment Item by ID '${appointmentId}' and User ID '${userId}'`);
+
+        let result = await this.docClient.delete({
+            TableName: this.appointmentTableName,
+            Key: {
+                appointmentId: appointmentId,
+                userId
+            }
+        }).promise();
+
+        if (result.$response.error) {
+            logger.error(`Appointment Item by ID '${appointmentId}' and User ID '${userId}' NOT deleted: ${JSON.stringify(result.$response.error)}`);
+            return false;
+        }
+
+        logger.info(`Appointment Item by ID '${appointmentId}' and User ID '${userId}' deleted`);
+
+        return true;
+    }
+
+}
