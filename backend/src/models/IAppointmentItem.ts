@@ -1,6 +1,7 @@
 export interface IAppointmentItem {
-    userId: string;
-    appointmentId: string;
+    userId: string; // hash
+    appointmentId: string; // range
+
     barberId: string;
     serviceId: string;
     date: string;
