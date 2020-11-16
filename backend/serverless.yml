@@ -1,6 +1,8 @@
 service:
   name: serverless-barber-appointments
 
+frameworkVersion: 2
+
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
@@ -13,6 +15,9 @@ provider:
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
+
+  apiGateway:
+    minimumCompressionSize: 1024
 
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
@@ -30,6 +35,10 @@ provider:
         - '*'
 
 custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
   documentation:
     api:
       info:
