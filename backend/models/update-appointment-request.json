@@ -6,10 +6,6 @@
 
   "properties": {
 
-    "appointmentId": {
-      "type": "string"
-    },
-
     "serviceId": {
       "type": "string"
     },
@@ -30,7 +26,6 @@
   },
 
   "required": [
-    "appointmentId",
     "serviceId",
     "barberId",
     "date",

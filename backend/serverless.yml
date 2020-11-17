@@ -112,6 +112,50 @@ functions:
           - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.S3_ATTACHEMENTS_BUCKET}/*
 
+  UpdateAppointment:
+    handler: src/lambda/http/updateAppointment.handler
+    events:
+      - http:
+          method: patch
+          path: appointments/{appointmentId}
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Update a Appointment Item
+            description: Update a Appointment Item
+            requestModels:
+              'application/json': UpdateAppointmentReq
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+
+  DeleteTodo:
+    handler: src/lambda/http/deleteAppointment.handler
+    events:
+      - http:
+          method: delete
+          path: appointments/{appointmentId}
+          cors: true
+          authorizer: Auth
+          documentation:
+            summary: Delete a Appointment Item
+            description: Delete a Appointment Item
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+      - Effect: Allow
+        Action:
+          - s3:GetObject
+          - s3:DeleteObject
+        Resource: arn:aws:s3:::${self:provider.environment.S3_ATTACHEMENTS_BUCKET}/*
+
 resources:
   Resources:
 
@@ -170,7 +214,7 @@ resources:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,PATCH'"
         ResponseType: DEFAULT_4XX
         RestApiId:
           Ref: ApiGatewayRestApi

@@ -62,7 +62,8 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
 }
 
 function getToken(authHeader: string): string {
-  if (!authHeader) throw new Error('No authentication header');
+  if (!authHeader)
+    throw new Error('No authentication header');
 
   if (!authHeader.toLowerCase().startsWith('bearer '))
     throw new Error('Invalid authentication header');
@@ -74,9 +75,9 @@ function getToken(authHeader: string): string {
 }
 
 interface ISignedKey {
-  kid: string,
-  nbf: string,
-  publicKey: string
+  kid: string;
+  nbf: string;
+  publicKey: string;
 }
 
 async function getSigningKey(jwtKid: string): Promise<ISignedKey> {

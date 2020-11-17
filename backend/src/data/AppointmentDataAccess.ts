@@ -107,40 +107,12 @@ export class AppointmentDataAccess implements IAppointmentDataAccess {
                 appointmentId: appointment.appointmentId,
                 userId: appointment.userId
             },
-            UpdateExpression: "set barberId = :barberId, serviceId = :serviceId, date = :date, time = :time, done = :done, score = :score, comment = :comment, beforeImg = :beforeImg, afterImg = :afterImg",
-            ExpressionAttributeValues: {
-                ":barberId": appointment.barberId,
-                ":serviceId": appointment.serviceId,
-                ":date": appointment.date,
-                ":time": appointment.time,
-                ":done": appointment.done || false,
-                ":score": appointment.score || 0,
-                ":comment": appointment.comment || null,
-                ":beforeImg": appointment.beforeImg || null,
-                ":afterImg": appointment.afterImg || null,
+            ExpressionAttributeNames: {
+                "#date": "date",
+                "#time": "time",
+                "#comment": "comment"
             },
-            ReturnValues: "UPDATED_NEW"
-        }).promise();
-
-        if (result.$response.error)
-            this.logger.error(`Appointment Item NOT updated: ${JSON.stringify(result.$response.error)}`);
-        else
-            this.logger.info(`Appointment Item updated: ${JSON.stringify(appointment)}`);
-
-        return appointment;
-    }
-
-    async updateIdDone(appointment: IAppointmentItem): Promise<IAppointmentItem> {
-
-        this.logger.info(`Updating Appointment Item: ${JSON.stringify(appointment)}`);
-
-        let result = await this.docClient.update({
-            TableName: this.appointmentTableName,
-            Key: {
-                appointmentId: appointment.appointmentId,
-                userId: appointment.userId
-            },
-            UpdateExpression: "set barberId = :barberId, serviceId = :serviceId, date = :date, time = :time, done = :done, score = :score, comment = :comment, beforeImg = :beforeImg, afterImg = :afterImg",
+            UpdateExpression: "set barberId = :barberId, serviceId = :serviceId, #date = :date, #time = :time, done = :done, score = :score, #comment = :comment, beforeImg = :beforeImg, afterImg = :afterImg",
             ExpressionAttributeValues: {
                 ":barberId": appointment.barberId,
                 ":serviceId": appointment.serviceId,

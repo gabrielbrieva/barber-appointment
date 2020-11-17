@@ -1,5 +1,3 @@
 import { ICreateReq } from "./ICreateReq";
 
-export interface IUpdateReq extends ICreateReq {
-    appointmentId: string;
-}
+export interface IUpdateReq extends ICreateReq { }

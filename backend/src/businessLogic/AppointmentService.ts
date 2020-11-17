@@ -24,6 +24,7 @@ export interface IAppointmentService {
     get(userId: string, appointmentId?: string): Promise<IAppointmentItem[]>;
     getAllDone(): Promise<IAppointmentItem[]>;
     create(createAppointmentReq: ICreateReq, userId: string): Promise<IAppointmentItem>;
+    updateAppointment(updateReq: IUpdateReq, userId: string, appointmentId: string): Promise<IAppointmentItem>
     updateIsDone(updateIsDoneReq: IUpdateIsDoneReq, userId: string): Promise<IAppointmentItem>;
     updateReview(updateReviewReq: IUpdateReviewReq, userId: string): Promise<IAppointmentItem>;
     delete(userId: string, appointmentId: string): Promise<boolean>;
@@ -68,11 +69,11 @@ class AppointmentSrv implements IAppointmentService {
 
     }
 
-    async updateAppointment(updateReq: IUpdateReq, userId: string): Promise<IAppointmentItem> {
-        let items: IAppointmentItem[] = await this.appointmentDataAccess.get(userId, updateReq.appointmentId);
+    async updateAppointment(updateReq: IUpdateReq, userId: string, appointmentId: string): Promise<IAppointmentItem> {
+        let items: IAppointmentItem[] = await this.appointmentDataAccess.get(userId, appointmentId);
 
         if (!items || items.length == 0) {
-            this.logger.error(`Appointments not found for User ID ${userId} and AppointmentId: ${updateReq.appointmentId}`);
+            this.logger.error(`Appointments not found for User ID ${userId} and AppointmentId: ${appointmentId}`);
             return null;
         }
 
