@@ -6,6 +6,7 @@ import { createDocumentClient } from "./DynamoDB";
 export interface IAppointmentDataAccess {
     get(userId: string, appointmentId?: string): Promise<IAppointmentItem[]>;
     getByBarber(barberId: string, appointmentId?: string): Promise<IAppointmentItem[]>;
+    getAllDone(): Promise<IAppointmentItem[]>;
     create(appointment: IAppointmentItem): Promise<IAppointmentItem>;
     update(appointment: IAppointmentItem): Promise<IAppointmentItem>;
     delete(userId: string, appointmentId: string): Promise<boolean>;
@@ -63,6 +64,19 @@ export class AppointmentDataAccess implements IAppointmentDataAccess {
         }
 
         const result = await this.docClient.scan(scanInput).promise();
+
+        return result.Items as IAppointmentItem[];
+    }
+
+    async getAllDone(): Promise<IAppointmentItem[]> {
+
+        const result = await this.docClient.scan({
+            TableName: this.appointmentTableName,
+            FilterExpression: 'done = :done',
+            ExpressionAttributeValues: {
+                ':done': true
+            }
+        }).promise();
 
         return result.Items as IAppointmentItem[];
     }

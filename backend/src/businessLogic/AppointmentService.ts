@@ -22,6 +22,7 @@ const S3_BEFORE_PREFIX = 'before'
 
 export interface IAppointmentService {
     get(userId: string, appointmentId?: string): Promise<IAppointmentItem[]>;
+    getAllDone(): Promise<IAppointmentItem[]>;
     create(createAppointmentReq: ICreateReq, userId: string): Promise<IAppointmentItem>;
     updateIsDone(updateIsDoneReq: IUpdateIsDoneReq, userId: string): Promise<IAppointmentItem>;
     updateReview(updateReviewReq: IUpdateReviewReq, userId: string): Promise<IAppointmentItem>;
@@ -41,6 +42,11 @@ class AppointmentSrv implements IAppointmentService {
     async get(userId: string, appointmentId?: string): Promise<IAppointmentItem[]> {
         this.logger.info(`Getting Appointment items by User ID '${userId}' and Appointment ID '${appointmentId}'`);
         return this.appointmentDataAccess.get(userId, appointmentId);
+    }
+
+    async getAllDone(): Promise<IAppointmentItem[]> {
+        this.logger.info(`Getting done Appointment items`);
+        return this.appointmentDataAccess.getAllDone();
     }
 
     async create(createAppointmentReq: ICreateReq, userId: string): Promise<IAppointmentItem> {

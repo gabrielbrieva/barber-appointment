@@ -1,18 +1,21 @@
-import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
-import 'source-map-support/register'
+import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda';
+import 'source-map-support/register';
 
-import { verify, decode } from 'jsonwebtoken'
-import { createLogger } from '../../utils/logger'
-import Axios from 'axios'
-import { Jwt } from '../../auth/Jwt'
-import { JwtPayload } from '../../auth/JwtPayload'
+import { verify, decode } from 'jsonwebtoken';
+import { createLogger } from '../../utils/logger';
+import Axios from 'axios';
+import { Jwt } from '../../auth/Jwt';
+import { JwtPayload } from '../../auth/JwtPayload';
 
-const logger = createLogger('auth')
-const jwksUrl = 'https://dev-saet8-p4.us.auth0.com/.well-known/jwks.json'
+const logger = createLogger('auth');
+const jwksUrl = 'https://dev-saet8-p4.us.auth0.com/.well-known/jwks.json';
 
 export const handler = async (event: CustomAuthorizerEvent): Promise<CustomAuthorizerResult> => {
 
+  logger.info('Processing event: ', event);
+
   logger.info('Authorizing a user', event.authorizationToken);
+
   try {
     const jwtToken = await verifyToken(event.authorizationToken);
     logger.info('User was authorized', jwtToken);
@@ -52,17 +55,10 @@ export const handler = async (event: CustomAuthorizerEvent): Promise<CustomAutho
 async function verifyToken(authHeader: string): Promise<JwtPayload> {
   const token = getToken(authHeader);
 
-  try {
-    const jwt: Jwt = decode(token, { complete: true }) as Jwt;
-    const key = await getSigningKey(jwt.header.kid);
+  const jwt: Jwt = decode(token, { complete: true }) as Jwt;
+  const key = await getSigningKey(jwt.header.kid);
 
-    return verify(token, key.publicKey, { algorithms: ['RS256'] }) as JwtPayload;
-
-  } catch (err) {
-    logger.error(err);
-  }
-
-  return null;
+  return verify(token, key.publicKey, { algorithms: ['RS256'] }) as JwtPayload;
 }
 
 function getToken(authHeader: string): string {
@@ -85,7 +81,8 @@ interface ISignedKey {
 
 async function getSigningKey(jwtKid: string): Promise<ISignedKey> {
 
-  if (!jwtKid) throw new Error('jwtKid arg is required');
+  if (!jwtKid)
+    throw new Error('jwtKid arg is required');
 
   const response = await Axios.get(jwksUrl, {
     responseType: 'json'

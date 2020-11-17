@@ -64,7 +64,7 @@ functions:
           method: post
           path: appointments
           cors: true
-          #authorizer: Auth
+          authorizer: Auth
           reqValidatorName: RequestBodyValidator
           documentation:
             summary: Create a new Appointment Item
@@ -77,12 +77,40 @@ functions:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
 
-  hello:
-    handler: src/handler.hello
+  GetDAppointments:
+    handler: src/lambda/http/getDoneAppointments.handler
     events:
       - http:
           method: get
-          path: hello
+          path: appointments
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+      - Effect: Allow
+        Action:
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.S3_ATTACHEMENTS_BUCKET}/*
+
+  GetUAppointments:
+    handler: src/lambda/http/getUserAppointments.handler
+    events:
+      - http:
+          method: get
+          path: userappointments
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+      - Effect: Allow
+        Action:
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.S3_ATTACHEMENTS_BUCKET}/*
 
 resources:
   Resources:
