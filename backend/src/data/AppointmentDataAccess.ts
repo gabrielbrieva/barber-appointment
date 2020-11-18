@@ -5,7 +5,7 @@ import { createDocumentClient } from "./DynamoDB";
 
 export interface IAppointmentDataAccess {
     get(userId: string, appointmentId?: string): Promise<IAppointmentItem[]>;
-    getByBarber(barberId: string, appointmentId?: string): Promise<IAppointmentItem[]>;
+    getById(appointmentId: string): Promise<IAppointmentItem[]>;
     getAllDone(): Promise<IAppointmentItem[]>;
     create(appointment: IAppointmentItem): Promise<IAppointmentItem>;
     update(appointment: IAppointmentItem): Promise<IAppointmentItem>;
@@ -46,24 +46,16 @@ export class AppointmentDataAccess implements IAppointmentDataAccess {
         return result.Items as IAppointmentItem[];
     }
 
-    async getByBarber(barberId: string, appointmentId?: string): Promise<IAppointmentItem[]> {
-        this.logger.info(`Getting all appointments by barber id '${barberId}'`);
+    async getById(appointmentId: string): Promise<IAppointmentItem[]> {
+        this.logger.info(`Getting appointment by id '${appointmentId}'`);
 
-        let scanInput: DocumentClient.ScanInput  = {
+        const result = await this.docClient.scan({
             TableName: this.appointmentTableName,
-            FilterExpression: 'barberId = :barberId',
+            FilterExpression: 'appointmentId = :appointmentId',
             ExpressionAttributeValues: {
-                ':barberId': barberId
+                ':appointmentId': appointmentId
             }
-        }
-
-        if (appointmentId) {
-            this.logger.info(`Using appointment id '${appointmentId}'`);
-            scanInput.FilterExpression += ' AND appointmentId = :appointmentId';
-            scanInput.ExpressionAttributeValues[':appointmentId'] = appointmentId;
-        }
-
-        const result = await this.docClient.scan(scanInput).promise();
+        }).promise();
 
         return result.Items as IAppointmentItem[];
     }

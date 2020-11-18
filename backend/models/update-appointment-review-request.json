@@ -6,10 +6,6 @@
 
   "properties": {
 
-    "appointmentId": {
-      "type": "string"
-    },
-
     "score": {
       "type": "number"
     },
@@ -20,7 +16,6 @@
   },
 
   "required": [
-    "appointmentId",
-    "isDone"
+    "score"
   ]
 }

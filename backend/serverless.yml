@@ -52,6 +52,12 @@ custom:
       - name: UpdateAppointmentReq
         contentType: application/json
         schema: ${file(models/update-appointment-request.json)}
+      - name: UpdateAppointmentReviewReq
+        contentType: application/json
+        schema: ${file(models/update-appointment-review-request.json)}
+      - name: UpdateAppointmentIsDoneReq
+        contentType: application/json
+        schema: ${file(models/update-appointment-is-done-request.json)}
 
 functions:
   Auth:
@@ -130,6 +136,47 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:Query
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+
+  UpdateReview:
+    handler: src/lambda/http/updateAppointmentReview.handler
+    events:
+      - http:
+          method: patch
+          path: appointments/review/{appointmentId}
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Update a Appointment Review
+            description: Update a Appointment Review
+            requestModels:
+              'application/json': UpdateAppointmentReviewReq
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+
+  UpdateIsDone:
+    handler: src/lambda/http/updateAppointmentIsDone.handler
+    events:
+      - http:
+          method: patch
+          path: appointments/done/{appointmentId}
+          cors: true
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Update a Appointment done
+            description: Update a Appointment done
+            requestModels:
+              'application/json': UpdateAppointmentIsDoneReq
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
 

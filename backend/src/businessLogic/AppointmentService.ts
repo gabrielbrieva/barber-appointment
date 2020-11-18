@@ -4,7 +4,6 @@ import { createLogger } from "../utils/logger";
 import * as uuid from 'uuid';
 import { ICreateReq } from "../requests/appointment/ICreateReq";
 import { IUpdateReviewReq } from "../requests/appointment/IUpdateReviewReq";
-import { IUpdateIsDoneReq } from "../requests/appointment/IUpdateIsDoneReq";
 import { IUpdateReq } from "../requests/appointment/IUpdateReq";
 import * as AWS from "aws-sdk";
 
@@ -25,8 +24,8 @@ export interface IAppointmentService {
     getAllDone(): Promise<IAppointmentItem[]>;
     create(createAppointmentReq: ICreateReq, userId: string): Promise<IAppointmentItem>;
     updateAppointment(updateReq: IUpdateReq, userId: string, appointmentId: string): Promise<IAppointmentItem>
-    updateIsDone(updateIsDoneReq: IUpdateIsDoneReq, userId: string): Promise<IAppointmentItem>;
-    updateReview(updateReviewReq: IUpdateReviewReq, userId: string): Promise<IAppointmentItem>;
+    updateIsDone(isDone: boolean, appointmentId: string): Promise<IAppointmentItem>;
+    updateReview(updateReviewReq: IUpdateReviewReq, userId: string, appointmentId: string): Promise<IAppointmentItem>;
     delete(userId: string, appointmentId: string): Promise<boolean>;
     getUpdateBeforeImgUrl(appointmentId: string): string;
     getUpdateAfterImgUrl(appointmentId: string): string;
@@ -87,25 +86,25 @@ class AppointmentSrv implements IAppointmentService {
         return await this.appointmentDataAccess.update(item);
     }
 
-    async updateIsDone(updateIsDoneReq: IUpdateIsDoneReq, barberId: string): Promise<IAppointmentItem> {
+    async updateIsDone(isDone: boolean, appointmentId: string): Promise<IAppointmentItem> {
 
-        let items: IAppointmentItem[] = await this.appointmentDataAccess.getByBarber(barberId, updateIsDoneReq.appointmentId);
+        let items: IAppointmentItem[] = await this.appointmentDataAccess.getById(appointmentId);
 
         if (!items || items.length == 0) {
-            this.logger.error(`Appointments not found for Barber ID ${barberId} and AppointmentId: ${updateIsDoneReq.appointmentId}`);
+            this.logger.error(`Appointments not found for AppointmentId: ${appointmentId}`);
             return null;
         }
 
-        items[0].done = updateIsDoneReq.isDone;
+        items[0].done = isDone;
 
         return await this.appointmentDataAccess.update(items[0]);
     }
 
-    async updateReview(updateReviewReq: IUpdateReviewReq, userId: string): Promise<IAppointmentItem> {
-        let items: IAppointmentItem[] = await this.appointmentDataAccess.get(userId, updateReviewReq.appointmentId);
+    async updateReview(updateReviewReq: IUpdateReviewReq, userId: string, appointmentId: string): Promise<IAppointmentItem> {
+        let items: IAppointmentItem[] = await this.appointmentDataAccess.get(userId, appointmentId);
 
         if (!items || items.length == 0) {
-            this.logger.error(`Appointments not found for User ID ${userId} and AppointmentId: ${updateReviewReq.appointmentId}`);
+            this.logger.error(`Appointments not found for User ID ${userId} and AppointmentId: ${appointmentId}`);
             return null;
         }
 
