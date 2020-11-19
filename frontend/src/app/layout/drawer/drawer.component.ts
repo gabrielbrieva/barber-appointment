@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
-import { SidenavService } from 'src/app/services/sidenav.service';
+import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
 
 @Component({
   selector: 'app-drawer',

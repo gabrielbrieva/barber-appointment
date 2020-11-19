@@ -1,11 +1,11 @@
-<mat-card class="history-card" >
+<mat-card class="history-card" *ngIf="auth.isAuthenticated$ | async" >
     <h1>Make your Barber Appointment!!</h1>
     <app-appointment-wizard></app-appointment-wizard>
 </mat-card>
-<mat-card *ngFor="let h of histories" class="history-card">
+<mat-card *ngFor="let h of (histories$ | async)" class="history-card">
     <div class="header-container">
         <div class="job-barber">
-            <span class="job-name">{{h.jobName}}</span> by <a href="barber/{{h.barber.id}}" class="barber-name">{{h.barber.name}}</a>
+            <span class="job-name">{{h.serviceName}}</span> by {{h.barberName}}
         </div>
         <div class="date">{{h.date | date: 'mediumDate'}}</div>
     </div>
@@ -21,7 +21,7 @@
     </div>
     <div class="review-container">
         <div class="review-header">
-            <span class="user-name">{{h.userName}}</span> <span class="rating-container">{{h.score || 0}}/5 <app-rating [rate]="h.score || 0" [readonly]="true"></app-rating></span>
+            <span class="user-name">{{h.userName}}</span> <span class="rating-container"><app-rating [rate]="h.score || 0" [readonly]="true"></app-rating></span>
         </div>
         <p>{{h.comment}}</p>
     </div>

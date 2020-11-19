@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { IBarberHistory } from './histories';
-import { Histories } from './histories';
+import { AuthService } from '@auth0/auth0-angular';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { IBarberHistory } from '../models/IBarberHistory';
+import { ApiService } from '../services/api/api.service';
 
 @Component({
   selector: 'app-barber-histories',
@@ -9,12 +12,28 @@ import { Histories } from './histories';
 })
 export class BarberHistoriesComponent implements OnInit {
 
-  histories: IBarberHistory[] = Histories;
+  histories$: Observable<IBarberHistory[]>;
 
-  constructor() { }
+  constructor(private apiSrv: ApiService, public auth: AuthService) {
+    this.histories$ = apiSrv.getAppointments().pipe(
+        map(items => {
+          return items.map(i => {
+            return {
+              barberName: i.barberId,
+              date: new Date(`${i.date} ${i.time}`),
+              serviceName: i.serviceId,
+              userName: i.userId,
+              beforeImg: i.afterImg,
+              afterImg: i.afterImg,
+              comment: i.comment,
+              score: i.score
+            };
+          });
+        })
+      );
+  }
 
   ngOnInit(): void {
-
   }
 
 }

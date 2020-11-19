@@ -20,6 +20,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { MenubarComponent } from './layout/menubar/menubar.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -27,14 +28,15 @@ import { DrawerComponent } from './layout/drawer/drawer.component';
 import { BarberHistoriesComponent } from './barber-histories/barber-histories.component';
 import { ImageFallbackDirective } from './directives/image-fallback.directive';
 import { RatingComponent } from './rating/rating.component';
-import { AuthButtonComponent } from './auth/auth-button/auth-button.component';
-import { UserProfileComponent } from './auth/user-profile/user-profile.component';
 import { AuthModule } from '@auth0/auth0-angular';
 import { AppointmentItemComponent } from './appointment/appointment-item/appointment-item.component';
 import { AppointmentListComponent } from './appointment/appointment-list/appointment-list.component';
 import { environment } from 'src/environments/environment';
 import { AppointmentWizardComponent } from './appointment/appointment-wizard/appointment-wizard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthButtonComponent } from './auth-button/auth-button.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -46,13 +48,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ImageFallbackDirective,
     RatingComponent,
     AuthButtonComponent,
-    UserProfileComponent,
     AppointmentItemComponent,
     AppointmentListComponent,
     AppointmentWizardComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AuthModule.forRoot({
@@ -75,9 +77,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatStepperModule,
     MatSelectModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressBarModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

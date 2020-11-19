@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-export interface INewAppointment {
-  jobTypeId: string;
-  barberId: string;
-  date: Date;
-  time: string;
-}
+import { AuthService } from '@auth0/auth0-angular';
+import { map } from 'rxjs/operators';
+import { Barbers } from 'src/app/data/Barbers';
+import { ApiService } from 'src/app/services/api/api.service';
+import { INewAppointmentReq } from 'src/app/services/api/models/INewAppointmentReq';
+import { Services } from '../../data/Services';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-appointment-wizard',
@@ -16,13 +16,15 @@ export interface INewAppointment {
 export class AppointmentWizardComponent implements OnInit {
 
   formGroups: FormGroup[];
-
   minDate: Date;
+  selectedDate: Date;
+  barberServices: string[] = Services;
+  barbers: string[] = Barbers;
 
   @Input()
-  formData: INewAppointment;
+  formData: INewAppointmentReq;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private auth: AuthService, private apiSrv: ApiService, private datePipe: DatePipe) {
     this.minDate = new Date();
     this.minDate.setHours(0, 0, 0);
   }
@@ -30,7 +32,7 @@ export class AppointmentWizardComponent implements OnInit {
   ngOnInit(): void {
     if (!this.formData) {
       this.formData = {
-        jobTypeId: '',
+        serviceId: '',
         barberId: '',
         date: undefined,
         time: ''
@@ -53,8 +55,14 @@ export class AppointmentWizardComponent implements OnInit {
     ];
   }
 
-  createAppointment(): void {
-    console.log('create appointment based on "formData" variable');
+  async createAppointment(): Promise<void> {
+
+    this.formData.date = this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
+
+    this.auth.idTokenClaims$.pipe(map(r => r.__raw)).subscribe(async idToken => {
+      const result = await this.apiSrv.createAppointment(this.formData, idToken);
+      console.log(JSON.stringify(result));
+    });
   }
 
 }

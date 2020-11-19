@@ -1,4 +1,4 @@
-export interface ICreateReq {
+export interface INewAppointmentReq {
     serviceId: string;
     barberId: string;
     date: string;

@@ -2,9 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const apiId = '20bbebuw5d';
+const region = 'us-east-1';
+
 export const environment = {
   auth0Domain: 'dev-saet8-p4.us.auth0.com',
   auth0ClientId: 'tX1gTsitn6nUlpf4hbqRMR45DpS4Kw8z',
+  apiEndpoint: `https://${apiId}.execute-api.${region}.amazonaws.com/dev`,
   production: false
 };
 
