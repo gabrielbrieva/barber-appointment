@@ -1,7 +1,12 @@
-<mat-card class="history-card" *ngIf="auth.isAuthenticated$ | async" >
-    <h1>Make your Barber Appointment!!</h1>
+<mat-card class="history-card" *ngIf="(auth.isAuthenticated$ | async) && (auth.user$ | async) as user;else noauth" >
+    <h2>Hi {{user.name}}, make your new Barber Appointment!!</h2>
     <app-appointment-wizard></app-appointment-wizard>
 </mat-card>
+<ng-template #noauth>
+    <mat-card class="history-card" >
+        <h2>Sign up for a new look!!</h2>
+    </mat-card>
+</ng-template>
 <mat-card *ngFor="let h of (histories$ | async)" class="history-card">
     <div class="header-container">
         <div class="job-barber">

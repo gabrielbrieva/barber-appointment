@@ -5,6 +5,10 @@
   "type": "object",
 
   "properties": {
+    "userName": {
+      "type": "string"
+    },
+
     "serviceId": {
       "type": "string"
     },
@@ -25,6 +29,7 @@
   },
 
   "required": [
+    "userName",
     "serviceId",
     "barberId",
     "date",

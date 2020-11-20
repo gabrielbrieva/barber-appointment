@@ -22,7 +22,7 @@ export class BarberHistoriesComponent implements OnInit {
               barberName: i.barberId,
               date: new Date(`${i.date} ${i.time}`),
               serviceName: i.serviceId,
-              userName: i.userId,
+              userName: i.userName,
               beforeImg: i.afterImg,
               afterImg: i.afterImg,
               comment: i.comment,

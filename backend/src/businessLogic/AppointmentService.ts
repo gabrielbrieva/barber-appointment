@@ -55,6 +55,7 @@ class AppointmentSrv implements IAppointmentService {
         const newItem = await this.appointmentDataAccess.create({
             userId: userId,
             appointmentId: uuid.v4(),
+            userName: createAppointmentReq.userName,
             serviceId: createAppointmentReq.serviceId,
             barberId: createAppointmentReq.barberId,
             date: createAppointmentReq.date,

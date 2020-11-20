@@ -104,10 +104,11 @@ export class AppointmentDataAccess implements IAppointmentDataAccess {
                 "#time": "time",
                 "#comment": "comment"
             },
-            UpdateExpression: "set barberId = :barberId, serviceId = :serviceId, #date = :date, #time = :time, done = :done, score = :score, #comment = :comment, beforeImg = :beforeImg, afterImg = :afterImg",
+            UpdateExpression: "set barberId = :barberId, serviceId = :serviceId, userName = :userName, #date = :date, #time = :time, done = :done, score = :score, #comment = :comment, beforeImg = :beforeImg, afterImg = :afterImg",
             ExpressionAttributeValues: {
                 ":barberId": appointment.barberId,
                 ":serviceId": appointment.serviceId,
+                ":userName": appointment.userName,
                 ":date": appointment.date,
                 ":time": appointment.time,
                 ":done": appointment.done || false,

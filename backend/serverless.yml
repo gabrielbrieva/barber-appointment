@@ -180,7 +180,7 @@ functions:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
 
-  DeleteTodo:
+  DeleteAppointment:
     handler: src/lambda/http/deleteAppointment.handler
     events:
       - http:

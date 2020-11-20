@@ -1,13 +1,26 @@
-<mat-vertical-stepper #stepper linear="true" >
+<div *ngIf="state === States.IsLoading">
+    <span *ngIf="isUpdate">Updating Appointment...</span>
+    <span *ngIf="!isUpdate">Creating an Appointment...</span>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div *ngIf="state === States.Created">
+    <span></span>
+    <span *ngIf="isUpdate">Appointment Updated</span>
+    <span *ngIf="!isUpdate">Appointment Created</span>
+    <div class="button-row">
+        <button mat-flat-button color="primary" (click)="afterCreated()">Ok</button>
+    </div>
+</div>
+<mat-vertical-stepper #stepper linear="true" *ngIf="state === States.Ready">
     <mat-step [stepControl]="formGroups[0]">
         <form [formGroup]="formGroups[0]">
             <ng-template matStepLabel>
-                <span *ngIf="!formData.serviceId">Select your service</span>
-                <span *ngIf="formData.serviceId">Service: <span class="step-value">{{formData.serviceId}}</span></span>
+                <span *ngIf="!data.serviceId">Select your service</span>
+                <span *ngIf="data.serviceId">Service: <span class="step-value">{{data.serviceId}}</span></span>
             </ng-template>
             <mat-form-field>
                 <mat-label>Service</mat-label>
-                <mat-select formControlName="serviceCtrl" (selectionChange)="stepper.next()" [(ngModel)]="formData.serviceId" required>
+                <mat-select formControlName="serviceCtrl" (selectionChange)="stepper.next()" [(ngModel)]="data.serviceId" required>
                     <mat-option *ngFor="let service of barberServices" [value]="service">{{service}}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -15,13 +28,13 @@
     </mat-step>
     <mat-step [stepControl]="formGroups[1]">
         <ng-template matStepLabel>
-            <span *ngIf="!formData.barberId">Select your Barber</span>
-            <span *ngIf="formData.barberId">Barber: <span class="step-value">{{formData.barberId}}</span></span>
+            <span *ngIf="!data.barberId">Select your Barber</span>
+            <span *ngIf="data.barberId">Barber: <span class="step-value">{{data.barberId}}</span></span>
         </ng-template>
         <form [formGroup]="formGroups[1]">
             <mat-form-field>
                 <mat-label>Barber</mat-label>
-                <mat-select formControlName="barberCtrl" (selectionChange)="stepper.next()" [(ngModel)]="formData.barberId" required>
+                <mat-select formControlName="barberCtrl" (selectionChange)="stepper.next()" [(ngModel)]="data.barberId" required>
                     <mat-option *ngFor="let barber of barbers" [value]="barber">{{barber}}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -43,13 +56,13 @@
     </mat-step>
     <mat-step [stepControl]="formGroups[3]">
         <ng-template matStepLabel>
-            <span *ngIf="!formData.time">Choose your appointment time</span>
-            <span *ngIf="formData.time">Time: <span class="step-value">{{formData.time}}</span></span>
+            <span *ngIf="!data.time">Choose your appointment time</span>
+            <span *ngIf="data.time">Time: <span class="step-value">{{data.time}}</span></span>
         </ng-template>
         <form [formGroup]="formGroups[3]">
             <mat-form-field>
                 <mat-label>Choose time</mat-label>
-                <mat-select formControlName="timeCtrl" (selectionChange)="stepper.next()" [(ngModel)]="formData.time" required>
+                <mat-select formControlName="timeCtrl" (selectionChange)="stepper.next()" [(ngModel)]="data.time" required>
                     <mat-option value="10:30">10:30</mat-option>
                     <mat-option value="11:30">11:30</mat-option>
                 </mat-select>
@@ -60,9 +73,8 @@
         <ng-template matStepLabel>Checkout</ng-template>
         <p>Review your appointment</p>
         <div class="button-row">
-            <button mat-button (click)="stepper.reset()">Cancel</button>
+            <button mat-button (click)="cancel()">Cancel</button>
             <button mat-flat-button color="accent" (click)="createAppointment()">Done!</button>
         </div>
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </mat-step>
 </mat-vertical-stepper>

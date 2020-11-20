@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@auth0/auth0-angular';
 import { map } from 'rxjs/operators';
@@ -7,6 +7,9 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { INewAppointmentReq } from 'src/app/services/api/models/INewAppointmentReq';
 import { Services } from '../../data/Services';
 import { DatePipe } from '@angular/common';
+import { MatStepper } from '@angular/material/stepper';
+import { IUpdateAppointmentReq } from 'src/app/services/api/models/IUpdateAppointmentReq';
+import { IAppointmentItem } from 'src/app/services/api/models/IAppointmentItem';
 
 @Component({
   selector: 'app-appointment-wizard',
@@ -15,14 +18,27 @@ import { DatePipe } from '@angular/common';
 })
 export class AppointmentWizardComponent implements OnInit {
 
+  States = {
+    Ready: 0,
+    IsLoading: 1,
+    Created: 2
+  };
+
+  isUpdate = false;
   formGroups: FormGroup[];
   minDate: Date;
   selectedDate: Date;
   barberServices: string[] = Services;
   barbers: string[] = Barbers;
+  state: number = this.States.Ready;
+
+  @ViewChild('stepper')
+  stepper: MatStepper;
 
   @Input()
-  formData: INewAppointmentReq;
+  formData: INewAppointmentReq | IUpdateAppointmentReq;
+
+  data: INewAppointmentReq | IUpdateAppointmentReq;
 
   constructor(private formBuilder: FormBuilder, private auth: AuthService, private apiSrv: ApiService, private datePipe: DatePipe) {
     this.minDate = new Date();
@@ -30,14 +46,21 @@ export class AppointmentWizardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.formData) {
+
+    if (this.formData) {
+      this.isUpdate = true;
+      this.selectedDate = new Date(`${this.formData.date} ${this.formData.time}`);
+    } else {
       this.formData = {
+        userName: '',
         serviceId: '',
         barberId: '',
-        date: undefined,
+        date: '',
         time: ''
       };
     }
+
+    this.data = JSON.parse(JSON.stringify(this.formData));
 
     this.formGroups = [
       this.formBuilder.group({
@@ -57,12 +80,66 @@ export class AppointmentWizardComponent implements OnInit {
 
   async createAppointment(): Promise<void> {
 
-    this.formData.date = this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
+    this.state = this.States.IsLoading;
 
-    this.auth.idTokenClaims$.pipe(map(r => r.__raw)).subscribe(async idToken => {
-      const result = await this.apiSrv.createAppointment(this.formData, idToken);
+    this.data.date = this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
+
+    this.auth.idTokenClaims$.pipe(map(r => {
+      if (r.name) {
+        this.data.userName = r.name;
+      }
+
+      return r.__raw;
+    })).subscribe(async idToken => {
+      let result;
+
+      if (this.isUpdate) {
+        result = await this.apiSrv.updateAppointment(this.data as IUpdateAppointmentReq, idToken);
+      } else {
+        result = await this.apiSrv.createAppointment(this.data, idToken);
+      }
+
+      this.formData.serviceId = result.serviceId;
+      this.formData.barberId = result.barberId;
+      this.formData.date = result.date;
+      this.formData.time = result.time;
+
       console.log(JSON.stringify(result));
+      this.state = this.States.Created;
     });
+  }
+
+  cancel(): void {
+    if (!this.isUpdate) {
+      this.stepper.reset();
+    }
+
+    this.resetFormData();
+  }
+
+  afterCreated(): void {
+
+    this.resetFormData();
+    this.state = this.States.Ready;
+
+    if (!this.isUpdate) {
+      setTimeout(() => this.stepper.reset());
+    }
+  }
+
+  private resetFormData(): void {
+
+    if (this.isUpdate) {
+      this.selectedDate = new Date(`${this.formData.date} ${this.formData.time}`);
+    } else {
+      this.selectedDate = undefined;
+    }
+
+    this.data.userName = this.formData?.userName;
+    this.data.serviceId = this.formData?.serviceId;
+    this.data.barberId = this.formData?.barberId;
+    this.data.date = this.formData?.date;
+    this.data.time = this.formData?.time;
   }
 
 }
