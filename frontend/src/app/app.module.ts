@@ -30,13 +30,14 @@ import { ImageFallbackDirective } from './directives/image-fallback.directive';
 import { RatingComponent } from './rating/rating.component';
 import { AuthModule } from '@auth0/auth0-angular';
 import { AppointmentItemComponent } from './appointment/appointment-item/appointment-item.component';
-import { AppointmentListComponent } from './appointment/appointment-list/appointment-list.component';
+import { AppointmentListComponent, DeleteDialogComponent } from './appointment/appointment-list/appointment-list.component';
 import { environment } from 'src/environments/environment';
 import { AppointmentWizardComponent } from './appointment/appointment-wizard/appointment-wizard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthButtonComponent } from './auth-button/auth-button.component';
 import { DatePipe } from '@angular/common';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { DatePipe } from '@angular/common';
     AuthButtonComponent,
     AppointmentItemComponent,
     AppointmentListComponent,
-    AppointmentWizardComponent
+    AppointmentWizardComponent,
+    DeleteDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +80,8 @@ import { DatePipe } from '@angular/common';
     MatSelectModule,
     MatTableModule,
     MatPaginatorModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDialogModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

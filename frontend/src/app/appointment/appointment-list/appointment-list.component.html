@@ -47,7 +47,7 @@
                 </div>
                 <ng-template #pendingForm>
                     <div *ngIf="!element.done" class="element-detail" >
-                        <app-appointment-wizard [formData]="expandedElement"></app-appointment-wizard>
+                        <app-appointment-wizard [formData]="expandedElement" (done)="expandedElement = expandedElement === element ? null : element"></app-appointment-wizard>
                     </div>
                 </ng-template>
             </ng-container>

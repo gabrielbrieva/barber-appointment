@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@auth0/auth0-angular';
 import { map } from 'rxjs/operators';
@@ -37,8 +37,10 @@ export class AppointmentWizardComponent implements OnInit {
 
   @Input()
   formData: INewAppointmentReq | IUpdateAppointmentReq;
-
   data: INewAppointmentReq | IUpdateAppointmentReq;
+
+  @Output()
+  done: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(private formBuilder: FormBuilder, private auth: AuthService, private apiSrv: ApiService, private datePipe: DatePipe) {
     this.minDate = new Date();
@@ -105,7 +107,12 @@ export class AppointmentWizardComponent implements OnInit {
       this.formData.time = result.time;
 
       console.log(JSON.stringify(result));
-      this.state = this.States.Created;
+
+      if (this.isUpdate) {
+        this.afterCreated();
+      } else {
+        this.state = this.States.Created;
+      }
     });
   }
 
@@ -115,6 +122,7 @@ export class AppointmentWizardComponent implements OnInit {
     }
 
     this.resetFormData();
+    this.done.emit();
   }
 
   afterCreated(): void {
@@ -123,7 +131,12 @@ export class AppointmentWizardComponent implements OnInit {
     this.state = this.States.Ready;
 
     if (!this.isUpdate) {
-      setTimeout(() => this.stepper.reset());
+      setTimeout(() => {
+        this.stepper.reset();
+        this.done.emit();
+      });
+    } else {
+      this.done.emit();
     }
   }
 

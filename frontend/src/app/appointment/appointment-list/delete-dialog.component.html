@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Delete Appointment</h2>
+<mat-dialog-content class="mat-typography">
+  <h3 *ngIf="!inProgres">This action can not be undone, would you like to continue?</h3>
+  <span *ngIf="inProgres">Deleting Appointment...</span>
+  <mat-progress-bar mode="indeterminate" *ngIf="inProgres"></mat-progress-bar>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close [disabled]="inProgres">Cancel</button>
+  <button mat-button color="accent" (click)="delete()" cdkFocusInitial [disabled]="inProgres" >Delete</button>
+</mat-dialog-actions>
