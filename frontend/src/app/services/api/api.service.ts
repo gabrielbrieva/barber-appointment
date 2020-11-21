@@ -2,10 +2,10 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { INewAppointmentReq } from 'src/app/models/INewAppointmentReq';
+import { IUpdateAppointmentReq } from 'src/app/models/IUpdateAppointmentReq';
 import { environment as env } from 'src/environments/environment';
-import { IAppointmentItem } from './models/IAppointmentItem';
-import { INewAppointmentReq } from './models/INewAppointmentReq';
-import { IUpdateAppointmentReq } from './models/IUpdateAppointmentReq';
+import { IAppointmentItem } from '../../models/IAppointmentItem';
 
 @Injectable({
   providedIn: 'root'

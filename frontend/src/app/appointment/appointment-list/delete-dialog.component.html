@@ -5,6 +5,6 @@
   <mat-progress-bar mode="indeterminate" *ngIf="inProgres"></mat-progress-bar>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close [disabled]="inProgres">Cancel</button>
-  <button mat-button color="accent" (click)="delete()" cdkFocusInitial [disabled]="inProgres" >Delete</button>
+  <button mat-flat-button mat-dialog-close [disabled]="inProgres">Cancel</button>
+  <button mat-flat-button color="accent" (click)="delete()" cdkFocusInitial [disabled]="inProgres" >Delete</button>
 </mat-dialog-actions>

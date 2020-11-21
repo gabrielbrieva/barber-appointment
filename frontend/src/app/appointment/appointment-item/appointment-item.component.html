@@ -1,16 +1,18 @@
 <form [formGroup]="formGroup">
 
-    <mat-form-field>
+    <!--<mat-form-field>
         <mat-label>Before Barber</mat-label>
-        <input #beforeImg type="file" class="ng-hide" />
+        <input #beforeImg type="file" />
     </mat-form-field>
     <mat-form-field>
         <mat-label>After Barber</mat-label>
-        <input #afterImg type="file" class="ng-hide" />
-    </mat-form-field>
-    <app-rating [rate]="formData.score"></app-rating>
+        <input #afterImg type="file" />
+    </mat-form-field>-->
+    <div>
+        <span class="">Review Score: </span><app-rating [rate]="formData.score"></app-rating>
+    </div>
     <mat-form-field>
         <mat-label>Comment</mat-label>
-        <textarea matInput type="text" formControlName="commentControl" [ngModel]="formData.comment || ''"></textarea>
+        <textarea matInput placeholder="Write your comment review..."></textarea>
     </mat-form-field>
 </form>

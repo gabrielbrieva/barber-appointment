@@ -4,12 +4,11 @@ import { AuthService } from '@auth0/auth0-angular';
 import { map } from 'rxjs/operators';
 import { Barbers } from 'src/app/data/Barbers';
 import { ApiService } from 'src/app/services/api/api.service';
-import { INewAppointmentReq } from 'src/app/services/api/models/INewAppointmentReq';
 import { Services } from '../../data/Services';
 import { DatePipe } from '@angular/common';
 import { MatStepper } from '@angular/material/stepper';
-import { IUpdateAppointmentReq } from 'src/app/services/api/models/IUpdateAppointmentReq';
-import { IAppointmentItem } from 'src/app/services/api/models/IAppointmentItem';
+import { IUpdateAppointmentReq } from 'src/app/models/IUpdateAppointmentReq';
+import { INewAppointmentReq } from 'src/app/models/INewAppointmentReq';
 
 @Component({
   selector: 'app-appointment-wizard',

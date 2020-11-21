@@ -29,7 +29,7 @@ export class AppointmentItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      formControl: ['', Validators.required]
+      commentCtrl: ['', Validators.required]
     });
   }
 

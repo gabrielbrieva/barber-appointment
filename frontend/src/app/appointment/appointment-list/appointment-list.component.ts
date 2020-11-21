@@ -5,7 +5,7 @@ import { MatTable } from '@angular/material/table';
 import { AuthService } from '@auth0/auth0-angular';
 import { map } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api/api.service';
-import { IAppointmentItem } from 'src/app/services/api/models/IAppointmentItem';
+import { IAppointmentItem } from 'src/app/models/IAppointmentItem';
 
 @Component({
   selector: 'app-appointment-list',
