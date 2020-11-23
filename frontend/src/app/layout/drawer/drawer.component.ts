@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { AuthService } from '@auth0/auth0-angular';
 import { Subscription } from 'rxjs';
 import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
 
@@ -14,7 +15,7 @@ export class DrawerComponent implements OnInit, OnDestroy {
   private sidenav: MatSidenav;
   private sidenavObserver: Subscription;
 
-  constructor(private sideNavSrv: SidenavService) { }
+  constructor(private sideNavSrv: SidenavService, public auth: AuthService) { }
 
   ngOnInit(): void {
     // subscribe to sidenav toggle changed event

@@ -203,6 +203,26 @@ functions:
           - s3:DeleteObject
         Resource: arn:aws:s3:::${self:provider.environment.S3_ATTACHEMENTS_BUCKET}/*
 
+  GenerateUploadUrl:
+    handler: src/lambda/http/generateUploadUrl.handler
+    events:
+      - http:
+          method: get
+          path: appointments/{appointmentId}/attachment/{prefix}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.S3_ATTACHEMENTS_BUCKET}/*
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.APPOINTMENTS_TABLE}
+
 resources:
   Resources:
 

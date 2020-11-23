@@ -1,3 +1,6 @@
+@import "~@angular/material/theming";
+@import "../variables.scss";
+
 .history-card {
     max-width: 400px;
     margin: 16px auto;
@@ -9,8 +12,13 @@
     padding: 10px 0;
 }
 
-.job-barber {
+.srv-barber {
     flex: 1;
+}
+
+.srv-name {
+    font-weight: 500;
+    color: mat-color($accentPalette);
 }
 
 .date {
@@ -41,6 +49,18 @@
     width: 100%;
 }
 
+.before-container, .after-container {
+    width: 50%;
+}
+
+.before-container {
+    border-right: 1px solid white;
+}
+
+.after-container {
+    border-left: 1px solid white;
+}
+
 .review-container {
     padding: 10px 0;
 }
@@ -50,10 +70,13 @@
 }
 
 .user-name {
-    flex: 1
+    font-weight: 500;
+    color: mat-color($primaryPalette);
+    flex: 1;
 }
 
 .comment-container {
+    color: #555;
     margin: 10px 0;
     text-indent: 1em;
 }

@@ -9,17 +9,17 @@
 </ng-template>
 <mat-card *ngFor="let h of (histories$ | async)" class="history-card">
     <div class="header-container">
-        <div class="job-barber">
-            <span class="job-name">{{h.serviceName}}</span> by {{h.barberName}}
+        <div class="srv-barber">
+            <span class="srv-name">{{h.serviceName}}</span> by <span class="barber-name">{{h.barberName}}</span>
         </div>
         <div class="date">{{h.date | date: 'mediumDate'}}</div>
     </div>
     <div class="result-container">
-        <div class="img-container">
+        <div class="before-container">
             <img class="before-img" src="{{h.beforeImg}}" default="assets/img/barber_before.jpg" />
             <div class="stage-name">Before</div>
         </div>
-        <div class="img-container">
+        <div class="after-container">
             <img class="after-img" src="{{h.afterImg}}" default="assets/img/barber_after.jpg" />
             <div class="stage-name">After</div>
         </div>

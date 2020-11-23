@@ -16,8 +16,6 @@ const s3 = new XAWS.S3({
 
 const s3BucketName = process.env.S3_ATTACHEMENTS_BUCKET;
 const signedUrlExpiration = process.env.SIGNED_URL_EXPIRATION_TIME;
-const S3_AFTER_PREFIX = 'after';
-const S3_BEFORE_PREFIX = 'before'
 
 export interface IAppointmentService {
     get(userId: string, appointmentId?: string): Promise<IAppointmentItem[]>;
@@ -26,9 +24,10 @@ export interface IAppointmentService {
     updateAppointment(updateReq: IUpdateReq, userId: string, appointmentId: string): Promise<IAppointmentItem>
     updateIsDone(isDone: boolean, appointmentId: string): Promise<IAppointmentItem>;
     updateReview(updateReviewReq: IUpdateReviewReq, userId: string, appointmentId: string): Promise<IAppointmentItem>;
+    updateBeforeImgUrl(url: string, userId: string, appointmentId: string): Promise<IAppointmentItem>;
+    updateAfterImgUrl(url: string, userId: string, appointmentId: string): Promise<IAppointmentItem>;
     delete(userId: string, appointmentId: string): Promise<boolean>;
-    getUpdateBeforeImgUrl(appointmentId: string): string;
-    getUpdateAfterImgUrl(appointmentId: string): string;
+    getSignedUpdateUrl(appointmentId: string): string;
 }
 
 class AppointmentSrv implements IAppointmentService {
@@ -115,6 +114,32 @@ class AppointmentSrv implements IAppointmentService {
         return await this.appointmentDataAccess.update(items[0]);
     }
 
+    async updateBeforeImgUrl(url: string, userId: string, appointmentId: string): Promise<IAppointmentItem> {
+        let items: IAppointmentItem[] = await this.appointmentDataAccess.get(userId, appointmentId);
+
+        if (!items || items.length == 0) {
+            this.logger.error(`Appointments not found for User ID ${userId} and AppointmentId: ${appointmentId}`);
+            return null;
+        }
+
+        items[0].beforeImg = url;
+
+        return await this.appointmentDataAccess.update(items[0]);
+    }
+
+    async updateAfterImgUrl(url: string, userId: string, appointmentId: string): Promise<IAppointmentItem> {
+        let items: IAppointmentItem[] = await this.appointmentDataAccess.get(userId, appointmentId);
+
+        if (!items || items.length == 0) {
+            this.logger.error(`Appointments not found for User ID ${userId} and AppointmentId: ${appointmentId}`);
+            return null;
+        }
+
+        items[0].afterImg = url;
+
+        return await this.appointmentDataAccess.update(items[0]);
+    }
+
     async delete(userId: string, appointmentId: string): Promise<boolean> {
 
         const items: IAppointmentItem[] = await this.get(userId, appointmentId);
@@ -148,15 +173,7 @@ class AppointmentSrv implements IAppointmentService {
         }).promise();
     }
 
-    getUpdateBeforeImgUrl(appointmentId: string): string {
-        return this.getSignedUpdateUrl(`${S3_BEFORE_PREFIX}_${appointmentId}`);
-    }
-
-    getUpdateAfterImgUrl(appointmentId: string): string {
-        return this.getSignedUpdateUrl(`${S3_AFTER_PREFIX}_${appointmentId}`);
-    }
-
-    private getSignedUpdateUrl(objectId: string): string {
+    getSignedUpdateUrl(objectId: string): string {
         this.logger.info(`Getting Signed URL for '${objectId}'`);
 
         const signedUrl = s3.getSignedUrl('putObject', {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SidenavService } from '../../services/sidenav/sidenav.service';
 
 @Component({
@@ -6,12 +6,9 @@ import { SidenavService } from '../../services/sidenav/sidenav.service';
   templateUrl: './menubar.component.html',
   styleUrls: ['./menubar.component.scss']
 })
-export class MenubarComponent implements OnInit {
+export class MenubarComponent {
 
   constructor(private sideNavSrv: SidenavService) { }
-
-  ngOnInit(): void {
-  }
 
   toogleSidenav(): void {
     this.sideNavSrv.toggle();

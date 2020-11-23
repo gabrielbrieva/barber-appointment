@@ -52,6 +52,19 @@ export class ApiService {
     .toPromise();
   }
 
+  async getUploadUrl(prefix: string, appointmentId: string, idToken: string): Promise<string> {
+    return this.http.get<{ uploadUrl: string }>(`${env.apiEndpoint}/appointments/${appointmentId}/attachment/${prefix}`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      }
+    })
+    .pipe(
+      catchError(err => null as any),
+      map(r => (r as { uploadUrl: string }).uploadUrl )
+    )
+    .toPromise();
+  }
+
   async createAppointment(appointment: INewAppointmentReq, idToken: string): Promise<IAppointmentItem> {
     return this.http.post<IAppointmentItem>(`${env.apiEndpoint}/appointments`, appointment, {
       headers: {

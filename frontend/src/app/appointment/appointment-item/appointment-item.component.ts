@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -27,7 +28,9 @@ export interface IAppointmentData {
 export class AppointmentItemComponent implements OnInit {
 
   beforeImgSrc: string | ArrayBuffer;
+  beforeImgChanged = false;
   afterImgSrc: string | ArrayBuffer;
+  afterImgChanged = false;
 
   @Input()
   formData: IAppointmentItem;
@@ -39,11 +42,14 @@ export class AppointmentItemComponent implements OnInit {
   @Output()
   done: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private formBuilder: FormBuilder, private apiSrv: ApiService, private auth: AuthService, private dialog: MatDialog) { }
+  constructor(private formBuilder: FormBuilder, private apiSrv: ApiService,
+              private auth: AuthService, private dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
     if (this.formData) {
       this.data = JSON.parse(JSON.stringify(this.formData));
+      this.beforeImgSrc = this.data.beforeImg;
+      this.afterImgSrc = this.data.afterImg;
     }
 
     this.formGroup = this.formBuilder.group({
@@ -61,6 +67,20 @@ export class AppointmentItemComponent implements OnInit {
 
     this.auth.idTokenClaims$.pipe(map(r => r.__raw)).subscribe(async idToken => {
       try {
+
+        if (this.beforeImgChanged && this.beforeImgSrc) {
+          const uploadUrl = await this.apiSrv.getUploadUrl('before', this.data.appointmentId, idToken);
+          console.log(uploadUrl);
+
+          await this.http.put(uploadUrl, this.dataURItoBlob(this.beforeImgSrc)).toPromise();
+        }
+
+        if (this.afterImgChanged && this.afterImgSrc) {
+          const uploadUrl = await this.apiSrv.getUploadUrl('after', this.data.appointmentId, idToken);
+          console.log(uploadUrl);
+
+          await this.http.put(uploadUrl, this.dataURItoBlob(this.afterImgSrc)).toPromise();
+        }
 
         const item = await this.apiSrv.updateReview({
           comment: this.data.comment,
@@ -81,12 +101,25 @@ export class AppointmentItemComponent implements OnInit {
   }
 
   async selectBeforeImg(event: any): Promise<void> {
-    this.beforeImgSrc = await this.crop(event);
+    const newImgSrc = await this.crop(event);
+    this.beforeImgChanged = this.beforeImgSrc !== newImgSrc;
+    this.beforeImgSrc = newImgSrc;
   }
 
   async selectAfterImg(event: any): Promise<void> {
-    this.afterImgSrc = await this.crop(event);
+    const newImgSrc = await this.crop(event);
+    this.afterImgChanged = this.afterImgSrc !== newImgSrc;
+    this.afterImgSrc = newImgSrc;
   }
+
+  private dataURItoBlob(dataURI): Blob {
+    const binary = atob(dataURI.split(',')[1]);
+    const array = [];
+    for (let i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+}
 
   private async crop(event: any): Promise<string> {
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { ApiService } from '../services/api/api.service';
   templateUrl: './barber-histories.component.html',
   styleUrls: ['./barber-histories.component.scss']
 })
-export class BarberHistoriesComponent implements OnInit {
+export class BarberHistoriesComponent {
 
   histories$: Observable<IBarberHistory[]>;
 
@@ -23,7 +23,7 @@ export class BarberHistoriesComponent implements OnInit {
               date: new Date(`${i.date} ${i.time}`),
               serviceName: i.serviceId,
               userName: i.userName,
-              beforeImg: i.afterImg,
+              beforeImg: i.beforeImg,
               afterImg: i.afterImg,
               comment: i.comment,
               score: i.score
@@ -31,9 +31,6 @@ export class BarberHistoriesComponent implements OnInit {
           });
         })
       );
-  }
-
-  ngOnInit(): void {
   }
 
 }

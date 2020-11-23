@@ -1,12 +1,11 @@
 <h2 mat-dialog-title>Crop Image</h2>
 <mat-dialog-content class="mat-typography">
-  <span>Crop your photo</span>
 
   <image-cropper
     [imageChangedEvent]="imageChangedEvent"
     [maintainAspectRatio]="true"
     [aspectRatio]="2/3"
-    format="jpg"
+    format="jpeg"
     (imageCropped)="imageCropped($event)"
   ></image-cropper>
 

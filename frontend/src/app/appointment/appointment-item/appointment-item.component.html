@@ -8,13 +8,13 @@
         <div class="result-container">
             <div class="before-container">
                 <input hidden type="file" #beforeImgInput accept='image/*' (change)="selectBeforeImg($event)" />
-                <img class="before-img" [src]="beforeImgSrc" crossorigin default="assets/img/barber_before.jpg"
+                <img class="before-img" [src]="beforeImgSrc" default="assets/img/barber_before.jpg"
                     (click)="beforeImgInput.click()" matTooltip="Upload your photo before barber" matTooltipPosition="above" />
                 <div class="stage-name">Before</div>
             </div>
             <div class="after-container">
                 <input hidden type="file" #afterImgInput accept='image/*' (change)="selectAfterImg($event)" />
-                <img class="after-img" [src]="afterImgSrc" crossorigin default="assets/img/barber_after.jpg"
+                <img class="after-img" [src]="afterImgSrc" default="assets/img/barber_after.jpg"
                     (click)="afterImgInput.click()" matTooltip="Upload your photo after barber" matTooltipPosition="above" />
                 <div class="stage-name">After</div>
             </div>
