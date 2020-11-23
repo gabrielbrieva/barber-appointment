@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
+import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IBarberHistory } from '../models/IBarberHistory';
@@ -14,8 +15,11 @@ export class BarberHistoriesComponent {
 
   histories$: Observable<IBarberHistory[]>;
 
-  constructor(private apiSrv: ApiService, public auth: AuthService) {
-    this.histories$ = apiSrv.getAppointments().pipe(
+  constructor(private logger: NGXLogger, private apiSrv: ApiService, public auth: AuthService) {
+
+    this.logger.info('Getting public barbers histories');
+
+    this.histories$ = this.apiSrv.getAppointments().pipe(
         map(items => {
           return items.map(i => {
             return {

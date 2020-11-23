@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NGXLogger } from 'ngx-logger';
 
 export interface IStarContext {
   index: number;
@@ -26,7 +27,7 @@ export class RatingComponent implements OnInit {
   @Input()
   readonly: boolean;
 
-  constructor() {
+  constructor(private logger: NGXLogger) {
     this.max = 5;
     this.readonly = false;
     this.rate = 0;
@@ -35,11 +36,17 @@ export class RatingComponent implements OnInit {
   ngOnInit(): void {
     this.stars = Array.from({ length: this.max }, (v, k) => ({ fill: 0, index: k }));
     this.rate = !this.rate ? 0 : this.rate;
+
+    this.logger.debug(`Using rate: ${this.rate}`);
+
     this.update(this.rate);
   }
 
   handleClick(newRate: number): void {
     if (!this.readonly) {
+
+      this.logger.debug(`Rate changed from ${this.rate} to ${newRate}`);
+
       this.rate = newRate;
       this.rateChange.emit(this.rate);
       this.update(this.rate);

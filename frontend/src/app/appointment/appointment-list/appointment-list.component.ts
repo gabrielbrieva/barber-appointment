@@ -6,6 +6,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { map } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api/api.service';
 import { IAppointmentItem } from 'src/app/models/IAppointmentItem';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-appointment-list',
@@ -24,9 +25,13 @@ export class AppointmentListComponent implements OnInit {
   expandedElement: IAppointmentItem = null;
   formGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private apiSrv: ApiService, private auth: AuthService, private dialog: MatDialog) {
+  constructor(private logger: NGXLogger, private formBuilder: FormBuilder,
+              private apiSrv: ApiService, private auth: AuthService, private dialog: MatDialog) {
+
     this.auth.idTokenClaims$.pipe(map(r => r.__raw)).subscribe(async idToken => {
+      this.logger.info(`Getting User Appointments...`);
       this.items = await this.apiSrv.getAppointmentsByUser(idToken);
+      this.logger.debug(`User Appointments: ${JSON.stringify(this.items)}`);
     });
   }
 
@@ -44,6 +49,9 @@ export class AppointmentListComponent implements OnInit {
       subs.unsubscribe();
       this.auth.idTokenClaims$.pipe(map(r => r.__raw)).subscribe(async idToken => {
         try {
+
+          this.logger.info(`Deleting Appointment ${item.appointmentId}`);
+
           await this.apiSrv.delete(item.appointmentId, idToken);
 
           const index = this.items.findIndex(i => i.appointmentId === item.appointmentId);
@@ -54,10 +62,11 @@ export class AppointmentListComponent implements OnInit {
             this.items.splice(index, 1);
           }
 
+          this.logger.info(`Updating Appointment list after deletion`);
           this.table.renderRows();
 
         } catch (err) {
-          console.log(err);
+          this.logger.error(err);
         }
 
         dialogRef.close();

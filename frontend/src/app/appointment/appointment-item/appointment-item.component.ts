@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from '@auth0/auth0-angular';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { NGXLogger } from 'ngx-logger';
 import { map } from 'rxjs/operators';
 import { IAppointmentItem } from 'src/app/models/IAppointmentItem';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -42,11 +43,12 @@ export class AppointmentItemComponent implements OnInit {
   @Output()
   done: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private formBuilder: FormBuilder, private apiSrv: ApiService,
+  constructor(private logger: NGXLogger, private formBuilder: FormBuilder, private apiSrv: ApiService,
               private auth: AuthService, private dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
     if (this.formData) {
+      // clone of input data to prevent mutation
       this.data = JSON.parse(JSON.stringify(this.formData));
       this.beforeImgSrc = this.data.beforeImg;
       this.afterImgSrc = this.data.afterImg;
@@ -70,17 +72,19 @@ export class AppointmentItemComponent implements OnInit {
 
         if (this.beforeImgChanged && this.beforeImgSrc) {
           const uploadUrl = await this.apiSrv.getUploadUrl('before', this.data.appointmentId, idToken);
-          console.log(uploadUrl);
+          this.logger.debug(`Signed URL to upload 'before barber photo': ${uploadUrl}`);
 
           await this.http.put(uploadUrl, this.dataURItoBlob(this.beforeImgSrc)).toPromise();
         }
 
         if (this.afterImgChanged && this.afterImgSrc) {
           const uploadUrl = await this.apiSrv.getUploadUrl('after', this.data.appointmentId, idToken);
-          console.log(uploadUrl);
+          this.logger.debug(`Signed URL to upload 'after barber photo': ${uploadUrl}`);
 
           await this.http.put(uploadUrl, this.dataURItoBlob(this.afterImgSrc)).toPromise();
         }
+
+        this.logger.info('Updating Appointment review...');
 
         const item = await this.apiSrv.updateReview({
           comment: this.data.comment,
@@ -90,8 +94,10 @@ export class AppointmentItemComponent implements OnInit {
         this.formData.comment = this.data.comment;
         this.formData.score = this.data.score;
 
+        this.logger.info(`Appointment review updated: ${JSON.stringify(this.formData)}`);
+
       } catch (err) {
-        console.log(err);
+        this.logger.error(err);
       }
 
       this.done.emit();
@@ -113,17 +119,24 @@ export class AppointmentItemComponent implements OnInit {
   }
 
   private dataURItoBlob(dataURI): Blob {
+
+    this.logger.info('getting Base64 image to Blob');
+
     const binary = atob(dataURI.split(',')[1]);
     const array = [];
+
     for (let i = 0; i < binary.length; i++) {
         array.push(binary.charCodeAt(i));
     }
+
     return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
 }
 
   private async crop(event: any): Promise<string> {
 
     return new Promise<string>(resolve => {
+
+      this.logger.info(`Starting Crop dialog...`);
 
       const dialogRef = this.dialog.open(CropDialogComponent, {
         data: event
@@ -133,6 +146,7 @@ export class AppointmentItemComponent implements OnInit {
         subs.unsubscribe();
 
         if (croppedImage && croppedImage.length > 0) {
+          this.logger.info('Image croped');
           resolve(croppedImage);
         } else {
           resolve(null);

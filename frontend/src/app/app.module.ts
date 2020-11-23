@@ -40,6 +40,7 @@ import { DatePipe } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    LoggerModule.forRoot({
+      level: NgxLoggerLevel.INFO
+    }),
     AuthModule.forRoot({
       domain: environment.auth0Domain,
       clientId: environment.auth0ClientId

@@ -1,3 +1,6 @@
+/**
+ * Barber services declared at source code to simplify the app
+ */
 export const Services = [
     'Air Cut',
     'Full Shave',

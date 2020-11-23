@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { MatStepper } from '@angular/material/stepper';
 import { IUpdateAppointmentReq } from 'src/app/models/IUpdateAppointmentReq';
 import { INewAppointmentReq } from 'src/app/models/INewAppointmentReq';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-appointment-wizard',
@@ -41,17 +42,27 @@ export class AppointmentWizardComponent implements OnInit {
   @Output()
   done: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private formBuilder: FormBuilder, private auth: AuthService, private apiSrv: ApiService, private datePipe: DatePipe) {
+  constructor(private logger: NGXLogger, private formBuilder: FormBuilder,
+              private auth: AuthService, private apiSrv: ApiService, private datePipe: DatePipe) {
+
     this.minDate = new Date();
     this.minDate.setHours(0, 0, 0);
   }
 
   ngOnInit(): void {
 
+    this.logger.info('Init AppointmentWizardComponent...');
+
     if (this.formData) {
+
+      this.logger.info(`Wizard to update an Appointment: ${JSON.stringify(this.formData)}`);
+
       this.isUpdate = true;
       this.selectedDate = new Date(`${this.formData.date} ${this.formData.time}`);
     } else {
+
+      this.logger.info('Wizard for new Appointment');
+
       this.formData = {
         userName: '',
         serviceId: '',
@@ -61,8 +72,10 @@ export class AppointmentWizardComponent implements OnInit {
       };
     }
 
+    // clone input data to prevent mutation
     this.data = JSON.parse(JSON.stringify(this.formData));
 
+    // FormGroups definitions including validations
     this.formGroups = [
       this.formBuilder.group({
         serviceCtrl: ['', Validators.required]
@@ -95,8 +108,10 @@ export class AppointmentWizardComponent implements OnInit {
       let result;
 
       if (this.isUpdate) {
+        this.logger.info(`Updating Appointment ${JSON.stringify(this.data)}`);
         result = await this.apiSrv.updateAppointment(this.data as IUpdateAppointmentReq, idToken);
       } else {
+        this.logger.info(`Creating Appointment ${JSON.stringify(this.data)}`);
         result = await this.apiSrv.createAppointment(this.data, idToken);
       }
 
@@ -105,7 +120,7 @@ export class AppointmentWizardComponent implements OnInit {
       this.formData.date = result.date;
       this.formData.time = result.time;
 
-      console.log(JSON.stringify(result));
+      this.logger.info(`Result: ${JSON.stringify(result)}`);
 
       if (this.isUpdate) {
         this.afterCreated();
