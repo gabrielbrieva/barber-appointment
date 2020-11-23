@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { INewAppointmentReq } from 'src/app/models/INewAppointmentReq';
 import { IUpdateAppointmentReq } from 'src/app/models/IUpdateAppointmentReq';
+import { IUpdateReviewReq } from 'src/app/models/IUpdateReviewReq';
 import { environment as env } from 'src/environments/environment';
 import { IAppointmentItem } from '../../models/IAppointmentItem';
 
@@ -62,6 +63,15 @@ export class ApiService {
 
   async updateAppointment(appointment: IUpdateAppointmentReq, idToken: string): Promise<IAppointmentItem> {
     return this.http.patch<IAppointmentItem>(`${env.apiEndpoint}/appointments/${appointment.appointmentId}`, appointment, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${idToken}`
+      }
+    }).toPromise<IAppointmentItem>();
+  }
+
+  async updateReview(review: IUpdateReviewReq, appointmentId: string, idToken: string): Promise<IAppointmentItem> {
+    return this.http.patch<IAppointmentItem>(`${env.apiEndpoint}/appointments/review/${appointmentId}`, review, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${idToken}`

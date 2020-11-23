@@ -34,6 +34,7 @@ export class RatingComponent implements OnInit {
 
   ngOnInit(): void {
     this.stars = Array.from({ length: this.max }, (v, k) => ({ fill: 0, index: k }));
+    this.rate = !this.rate ? 0 : this.rate;
     this.update(this.rate);
   }
 

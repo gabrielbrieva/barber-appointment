@@ -43,10 +43,10 @@
         <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
             <ng-container *ngIf="expandedElement == element">
                 <div *ngIf="element.done;else pendingForm" class="element-detail" >
-                    <app-appointment-item [formData]="expandedElement"></app-appointment-item>
+                    <app-appointment-item [formData]="expandedElement" (done)="expandedElement = expandedElement === element ? null : element"></app-appointment-item>
                 </div>
                 <ng-template #pendingForm>
-                    <div *ngIf="!element.done" class="element-detail" >
+                    <div class="element-detail" >
                         <app-appointment-wizard [formData]="expandedElement" (done)="expandedElement = expandedElement === element ? null : element"></app-appointment-wizard>
                     </div>
                 </ng-template>

@@ -29,7 +29,7 @@ import { BarberHistoriesComponent } from './barber-histories/barber-histories.co
 import { ImageFallbackDirective } from './directives/image-fallback.directive';
 import { RatingComponent } from './rating/rating.component';
 import { AuthModule } from '@auth0/auth0-angular';
-import { AppointmentItemComponent } from './appointment/appointment-item/appointment-item.component';
+import { AppointmentItemComponent, CropDialogComponent } from './appointment/appointment-item/appointment-item.component';
 import { AppointmentListComponent, DeleteDialogComponent } from './appointment/appointment-list/appointment-list.component';
 import { environment } from 'src/environments/environment';
 import { AppointmentWizardComponent } from './appointment/appointment-wizard/appointment-wizard.component';
@@ -38,6 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthButtonComponent } from './auth-button/auth-button.component';
 import { DatePipe } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     AppointmentItemComponent,
     AppointmentListComponent,
     AppointmentWizardComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    CropDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +68,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     }),
     FormsModule,
     ReactiveFormsModule,
+    ImageCropperModule,
     MatFormFieldModule,
     MatInputModule,
     MatNativeDateModule,
@@ -81,7 +85,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatTableModule,
     MatPaginatorModule,
     MatProgressBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
