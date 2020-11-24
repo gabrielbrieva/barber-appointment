@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  release:
+    types:
+      - published
+  push:
+  pull_request:
+    branches: [ main ]
+
+env:
+  AWS_DEPLOY_STAGE: dev
+  AWS_DEPLOY_REGION: us-east-1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_DEPLOY_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_DEPLOY_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_DEPLOY_REGION }}
+
+      - name: install dependencies
+        working-directory: ./backend
+        run: npm install
+
+      - name: build sls project
+        working-directory: ./backend
+        run: npm run build
+
+      - name: Upload build result for deploy job
+        if: github.event.pull_request.merged && github.event_name == 'release'
+        uses: actions/upload-artifact@v2
+        with:
+            name: backend
+            path: ./backend
+
+  deploy:
+    if: github.event.pull_request.merged && github.event_name == 'release'
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build result
+        uses: actions/download-artifact@v2
+        with:
+          name: backend
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_DEPLOY_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_DEPLOY_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_DEPLOY_REGION }}
+
+      - name: build sls project
+        working-directory: ./backend
+        run: npm run build
+
+
