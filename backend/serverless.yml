@@ -13,8 +13,8 @@ provider:
   name: aws
   runtime: nodejs12.x
 
-  stage: ${opt:stage, 'dev'}
-  region: ${opt:region, 'us-east-1'}
+  stage: ${env:AWS_DEPLOY_STAGE, 'dev'}
+  region: ${env:AWS_DEPLOY_REGION, 'us-east-1'}
 
   apiGateway:
     minimumCompressionSize: 1024
