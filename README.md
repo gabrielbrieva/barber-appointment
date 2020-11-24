@@ -34,6 +34,12 @@ aws configure
 npm run deploy
 ```
 
+### CI/CD
+The automatization of build and deploy is managed by GitHub Actions configured by main.yml file.
+
+* Build is triggered by each commit.
+* The AWS deploy action is triggered by relase tags.
+
 ## Frontend
 
 SPA based on Angular project
@@ -66,7 +72,3 @@ npm run start
 ## How this work
 
 ![Running](barber_appointment.gif)
-
-## CI/CD
-The automatization of AWS deploy es managed by GitHub Actions configured by main.yml file.
-The AWS deploy action is triggered by relase tags.
