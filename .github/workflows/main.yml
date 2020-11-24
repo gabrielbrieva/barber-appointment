@@ -20,11 +20,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: moving to backend folder
-        run: cd backend
-
       - name: install dependencies
+        working-directory: ./backend
         run: npm install
 
       - name: build sls project
+        working-directory: ./backend
         run: npm run build
