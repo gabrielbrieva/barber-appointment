@@ -5,7 +5,7 @@ Simple web application to make an appointment with barber. This repo contain two
 
 ## Backend
 
-![](https://github.com/gabrielbrieva/barber-appointment/workflows/CI/badge.svg)
+![CI/CD](https://github.com/gabrielbrieva/barber-appointment/workflows/CI/CD/badge.svg)
 
 Nodejs project based on Serverless Framework.
 
