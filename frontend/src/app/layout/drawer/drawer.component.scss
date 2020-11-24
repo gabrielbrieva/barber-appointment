@@ -1,0 +1,17 @@
+.app-drawer-container {
+    flex: 1;
+    flex-direction: column;
+}
+
+.app-content {
+    position: absolute;
+    overflow-y: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+mat-sidenav {
+    width: 200px;
+}

@@ -1,0 +1,33 @@
+<mat-card class="history-card" *ngIf="(auth.isAuthenticated$ | async) && (auth.user$ | async) as user;else noauth" >
+    <h2>Hi {{user.name}}, make your new Barber Appointment!!</h2>
+    <app-appointment-wizard></app-appointment-wizard>
+</mat-card>
+<ng-template #noauth>
+    <mat-card class="history-card" >
+        <h2>Sign up for a new look!!</h2>
+    </mat-card>
+</ng-template>
+<mat-card *ngFor="let h of (histories$ | async)" class="history-card">
+    <div class="header-container">
+        <div class="srv-barber">
+            <span class="srv-name">{{h.serviceName}}</span> by <span class="barber-name">{{h.barberName}}</span>
+        </div>
+        <div class="date">{{h.date | date: 'mediumDate'}}</div>
+    </div>
+    <div class="result-container">
+        <div class="before-container">
+            <img class="before-img" src="{{h.beforeImg}}" default="assets/img/barber_before.jpg" />
+            <div class="stage-name">Before</div>
+        </div>
+        <div class="after-container">
+            <img class="after-img" src="{{h.afterImg}}" default="assets/img/barber_after.jpg" />
+            <div class="stage-name">After</div>
+        </div>
+    </div>
+    <div class="review-container">
+        <div class="review-header">
+            <span class="user-name">{{h.userName}}</span> <span class="rating-container"><app-rating [rate]="h.score || 0" [readonly]="true"></app-rating></span>
+        </div>
+        <p class="comment-container">{{h.comment}}</p>
+    </div>
+</mat-card>

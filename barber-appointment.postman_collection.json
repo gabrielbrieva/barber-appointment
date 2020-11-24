@@ -1,0 +1,329 @@
+{
+	"info": {
+		"_postman_id": "d7d7d84d-2b06-4fed-8428-ff4ae182db4a",
+		"name": "barber-appointment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Appointment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{tokenId}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"serviceId\": \"Air Cut + Full Shave\",\r\n    \"barberId\": \"Scissor Hands\",\r\n    \"date\": \"2020-11-17\",\r\n    \"time\": \"15:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.{{region}}.amazonaws.com/dev/appointments",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"{{region}}",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"appointments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Appointment",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{tokenId}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"serviceId\": \"fullshave\",\r\n    \"barberId\": \"superbarber\",\r\n    \"date\": \"2020-11-16\",\r\n    \"time\": \"14:15\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.{{region}}.amazonaws.com/dev/appointments/{{appointmentId}}",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"{{region}}",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"appointments",
+						"{{appointmentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Appointment Review",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{tokenId}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comment\": \"short comment content\",\r\n    \"score\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.{{region}}.amazonaws.com/dev/appointments/review/{{appointmentId}}",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"{{region}}",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"appointments",
+						"review",
+						"{{appointmentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Appointment IsDone",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{tokenId}}"
+					},
+					{
+						"key": "enc",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"isDone\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.{{region}}.amazonaws.com/dev/appointments/done/{{appointmentId}}",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"{{region}}",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"appointments",
+						"done",
+						"{{appointmentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Appointments",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{tokenId}}"
+					}
+				],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.{{region}}.amazonaws.com/dev/userappointments",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"{{region}}",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"userappointments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Appointment",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{tokenId}}"
+					}
+				],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.{{region}}.amazonaws.com/dev/appointments/{{appointmentId}}",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"{{region}}",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"appointments",
+						"{{appointmentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Done Appointments",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.{{region}}.amazonaws.com/dev/appointments",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"{{region}}",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"appointments"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "8763cf12-7f02-43cc-9934-074fffc0c857",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a30dea1d-4d86-4645-815a-d9b69950c155",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "5e3d6a19-2f62-4d23-82ee-ec420f8cd946",
+			"key": "apiId",
+			"value": ""
+		},
+		{
+			"id": "db4efc1f-4983-4397-acf2-1c0b5d91ba01",
+			"key": "region",
+			"value": "us-east-1"
+		},
+		{
+			"id": "99c64939-a26f-4e1a-8e66-10f6261c6c1c",
+			"key": "tokenId",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}

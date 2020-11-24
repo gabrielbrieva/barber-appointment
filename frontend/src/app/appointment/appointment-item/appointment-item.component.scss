@@ -1,0 +1,43 @@
+.button-row {
+    text-align: right;
+}
+
+.button-row .mat-button-base {
+    margin: 8px 8px 8px 0;
+}
+
+.score-container {
+    padding: 15px 0;
+}
+
+.result-container {
+    width: 360px;
+    display: flex;
+    flex-direction: row;
+}
+
+.stage-name {
+    text-align: center;
+}
+
+.before-container, .after-container {
+    width: 50%;
+}
+
+.before-container {
+    border-right: 1px solid white;
+}
+
+.after-container {
+    border-left: 1px solid white;
+}
+
+.before-img, .after-img {
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+}
+
+.before-img:hover, .after-img:hover {
+    opacity: 1;
+}

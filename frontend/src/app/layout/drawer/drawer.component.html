@@ -1,0 +1,13 @@
+<mat-sidenav-container class='app-drawer-container'>
+    <mat-sidenav #sidenav>
+        <mat-nav-list (click)="sidenav.toggle()">
+            <a mat-list-item [routerLink]="'/'">Home</a>
+            <a mat-list-item *ngIf="auth.isAuthenticated$ | async" [routerLink]="'/appointments'">My Appointments</a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div class="app-content">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

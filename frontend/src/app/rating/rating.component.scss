@@ -1,0 +1,29 @@
+.rating-container {
+    display: inline-block;
+}
+
+.rate-container {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.star-container {
+    position: relative;
+    display: inline-block;
+}
+
+.star {
+    position: relative;
+    display: inline-block;
+    font-size: 1.5em;
+    color: #d67200;
+    line-height: 1em;
+}
+
+.half {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    color: #ffb100;
+}
+

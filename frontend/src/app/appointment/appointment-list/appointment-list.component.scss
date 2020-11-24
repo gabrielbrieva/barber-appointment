@@ -1,0 +1,42 @@
+table {
+    width: 100%;
+}
+
+.action-column {
+    width: 80px;
+    text-align: center;
+}
+
+.action-cell {
+    text-align: end;
+    white-space: nowrap;
+}
+
+tr.detail-row {
+    height: 0;
+}
+
+tr.element-row:not(.expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.element-row:not(.expanded-row):active {
+    background: #efefef;
+}
+
+.element-row td {
+    border-bottom-width: 0;
+}
+
+.element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.pending-icon {
+    color: lightgray;
+}
+
+app-appointment-wizard, app-appointment-item {
+    width: 100%;
+}

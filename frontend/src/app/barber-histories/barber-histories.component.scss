@@ -1,0 +1,82 @@
+@import "~@angular/material/theming";
+@import "../variables.scss";
+
+.history-card {
+    max-width: 400px;
+    margin: 16px auto;
+}
+
+.header-container {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+}
+
+.srv-barber {
+    flex: 1;
+}
+
+.srv-name {
+    font-weight: 500;
+    color: mat-color($accentPalette);
+}
+
+.date {
+    display: flex;
+    text-align: right;
+    color: gray;
+    font-size: 0.8em;
+}
+
+.result-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.stage-name {
+    text-align: center;
+}
+
+.img-container {
+    width: 50%;
+}
+
+.img-container:first-child {
+    border-right: 1px solid #aaa;
+}
+
+.before-img, .after-img {
+    width: 100%;
+}
+
+.before-container, .after-container {
+    width: 50%;
+}
+
+.before-container {
+    border-right: 1px solid white;
+}
+
+.after-container {
+    border-left: 1px solid white;
+}
+
+.review-container {
+    padding: 10px 0;
+}
+
+.review-header {
+    display: flex;
+}
+
+.user-name {
+    font-weight: 500;
+    color: mat-color($primaryPalette);
+    flex: 1;
+}
+
+.comment-container {
+    color: #555;
+    margin: 10px 0;
+    text-indent: 1em;
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "title": "Update Review of Appointment Item",
+  "type": "object",
+
+  "properties": {
+
+    "score": {
+      "type": "number"
+    },
+
+    "comment": {
+      "type": "string"
+    }
+  },
+
+  "required": [
+    "score"
+  ]
+}
