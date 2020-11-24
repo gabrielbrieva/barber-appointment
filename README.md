@@ -56,3 +56,7 @@ npm run start
 ```
 
 3. Start your browser at http://localhost:4200
+
+## How this work
+
+![Running](barber_appointment.gif)
