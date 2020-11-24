@@ -9,9 +9,8 @@ Nodejs project based on Serverless Framework.
 
 ### Requirement
 * npm command
-* AWS CLI
-* Serverless
 * node 12 or higher
+* AWS CLI
 
 ### Deployment
 
@@ -32,8 +31,14 @@ aws configure
 
 4. Deploy to AWS using Serverless
 ```bash
-sls deploy
+npm run deploy
 ```
+
+### CI/CD
+The automatization of build and deploy is managed by GitHub Actions configured by main.yml file.
+
+* Build is triggered by each commit.
+* The AWS deploy action is triggered by relase tags.
 
 ## Frontend
 
@@ -41,6 +46,7 @@ SPA based on Angular project
 
 ### Requirement
 * npm command
+* node 12 or higher
 
 ### Run
 To run the web application locally:
@@ -50,12 +56,18 @@ To run the web application locally:
 cd frontend
 ```
 
-2. Run npm script to build and start local server
+2. Update _src/environments/environment.ts_ file
+```ts
+const apiId = 'YOUR API ID FROM DEPLOYED AWS LAMBDA FUNCTIONS';
+const region = 'YOUR AWS REGION WHERE IS DEPLOYED FRONTEND';
+```
+
+3. Run npm script to build and start local server
 ```bash
 npm run start
 ```
 
-3. Start your browser at http://localhost:4200
+4. Start your browser at http://localhost:4200
 
 ## How this work
 
