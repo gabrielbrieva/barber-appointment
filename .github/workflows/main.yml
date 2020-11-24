@@ -35,14 +35,14 @@ jobs:
         run: npm run build
 
       - name: Upload build result for deploy job
-        if: github.event.pull_request.merged && github.event_name == 'release'
+        if: github.event_name == 'release'
         uses: actions/upload-artifact@v2
         with:
             name: backend
             path: ./backend
 
   deploy:
-    if: github.event.pull_request.merged && github.event_name == 'release'
+    if: github.event_name == 'release'
     needs: build
     runs-on: ubuntu-latest
 
