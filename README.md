@@ -36,11 +36,19 @@ aws configure
 npm run deploy
 ```
 
+### API Testing
+A Postman collection file was provided ([resources/barber-appointment.postman_collection.json](resources/barber-appointment.postman_collection.json)) to test Lambda functions.
+
 ### CI/CD
 The automatization of build and deploy is managed by GitHub Actions configured by main.yml file.
 
 * Build is triggered by each commit.
 * The AWS deploy action is triggered by relase tags.
+
+### Activity Diagram
+A simple Activity Diagram was provided to understand all interactions between user and systems:
+
+![Activity Diagram](resources/barber_appointment_diagram.jpg)
 
 ## Frontend
 
@@ -73,4 +81,4 @@ npm run start
 
 ## How this work
 
-![Running](barber_appointment.gif)
+![Running](resources/barber_appointment.gif)
