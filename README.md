@@ -40,10 +40,20 @@ npm run deploy
 A Postman collection file was provided ([resources/barber-appointment.postman_collection.json](resources/barber-appointment.postman_collection.json)) to test Lambda functions.
 
 ### CI/CD
-The automatization of build and deploy is managed by GitHub Actions configured by main.yml file.
+The automatization of build and deploy is managed by __GitHub Actions__ configured by main.yml file.
 
 * Build is triggered by each commit.
 * The AWS deploy action is triggered by relase tags.
+
+#### Variables:
+
+* AWS_DEPLOY_STAGE: AWS deploy stage (default as "dev")
+* AWS_DEPLOY_REGION: AWS deploy region (default as "us-east-1")
+
+#### Secrets:
+
+* AWS_DEPLOY_ACCESS_KEY_ID: AIM User Access Key ID
+* AWS_DEPLOY_SECRET_ACCESS_KEY: AIM User Secret Access Key
 
 ### Activity Diagram
 A simple Activity Diagram was provided to understand all interactions between user and systems:
@@ -72,12 +82,17 @@ const apiId = 'YOUR API ID FROM DEPLOYED AWS LAMBDA FUNCTIONS';
 const region = 'YOUR AWS REGION WHERE IS DEPLOYED FRONTEND';
 ```
 
-3. Run npm script to build and start local server
+3. (Optional) Update Auth0 configurations at _src/environments/environment.ts_ file
+```ts
+auth0ClientId: 'YOUR Auth0 Client ID'
+```
+
+4. Run npm script to build and start local server
 ```bash
 npm run start
 ```
 
-4. Start your browser at http://localhost:4200
+5. Start your browser at http://localhost:4200
 
 ## How this work
 
