@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SidenavService } from 'src/app/services/sidenav/sidenav.service';
 
 import { MenubarComponent } from './menubar.component';
 
@@ -8,6 +9,9 @@ describe('MenubarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [
+        {provide: SidenavService, useValue: jasmine.createSpyObj('SidenavService', [ 'toggle' ])}
+      ],
       declarations: [ MenubarComponent ]
     })
     .compileComponents();
