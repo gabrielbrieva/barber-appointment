@@ -1,7 +1,7 @@
 import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import * as middy from 'middy';
-import { cors } from 'middy/middlewares';
+import middy from '@middy/core';
+import cors from '@middy/http-cors';
 import { createLogger } from '../../utils/logger';
 import { IAppointmentItem } from '../../models/IAppointmentItem';
 import { AppointmentService } from '../../businessLogic/AppointmentService';
