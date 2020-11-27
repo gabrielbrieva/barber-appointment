@@ -4,38 +4,40 @@
   "description": "Serverless webpack example using Typescript",
   "main": "lib/handler.js",
   "scripts": {
-    "deploy": "npx sls deploy",
-    "build": "npx sls deploy --noDeploy",
+    "deploy": "npx sls deploy -v",
+    "build": "npx sls deploy --noDeploy -v",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/http-errors": "^1.8.0",
+    "@middy/core": "^1.4.0",
+    "@middy/http-cors": "^1.4.0",
     "aws-xray-sdk": "^3.2.0",
     "axios": "^0.21.0",
     "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
-    "middy": "^0.36.0",
     "source-map-support": "^0.5.11",
     "uuid": "^8.3.1",
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.64",
+    "@types/aws-lambda": "^8.10.17",
     "@types/node": "^10.12.18",
     "@types/serverless": "^1.72.5",
-    "aws-sdk": "^2.793.0",
     "fork-ts-checker-webpack-plugin": "^3.0.1",
-    "serverless": "2.4.0",
-    "serverless-aws-documentation": "^1.1.0",
-    "serverless-iam-roles-per-function": "^2.0.2",
-    "serverless-reqvalidator-plugin": "^1.0.3",
     "serverless-webpack": "^5.3.5",
     "ts-loader": "^8.0.11",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.5",
-    "webpack": "^5.4.0",
-    "webpack-node-externals": "^2.5.2"
+    "typescript": "^4.1.2",
+    "webpack": "^4.44.2",
+    "webpack-node-externals": "^1.7.2",
+    
+    "aws-sdk": "^2.793.0",
+    "serverless": "2.4.0",
+    "serverless-aws-documentation": "^1.1.0",
+    "serverless-iam-roles-per-function": "^2.0.2",
+    "serverless-reqvalidator-plugin": "^1.0.3"
   },
   "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
   "license": "MIT"
