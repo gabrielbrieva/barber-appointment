@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '@auth0/auth0-angular';
 import { LogoutOptions } from '@auth0/auth0-spa-js';
 import { of } from 'rxjs';
@@ -16,11 +17,17 @@ const AuthServiceMock = {
 describe('AuthButtonComponent', () => {
   let component: AuthButtonComponent;
   let fixture: ComponentFixture<AuthButtonComponent>;
+  const mockDocument = {
+    location: {
+      origin: 'http://localhost:4200'
+    }
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ MatMenuModule ],
       providers: [
-        { provide: DOCUMENT, useValue: { location: { origin: 'http://localhost:4200' } } },
+        { provide: DOCUMENT, useValue: mockDocument },
         { provide: AuthService, useValue: AuthServiceMock }
       ],
       declarations: [ AuthButtonComponent ]

@@ -2,7 +2,7 @@
     <span>Updating appointment review...</span>
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-<ng-template #formReview>
+<ng-template #formReview *ngIf="data">
     <form [formGroup]="formGroup">
 
         <div class="result-container">

@@ -45,9 +45,9 @@ describe('AppointmentItemComponent', () => {
       imports: [ HttpClientTestingModule, MatDialogModule ],
       providers: [
         { provide: NGXLogger, useValue: jasmine.createSpyObj('NGXLogger', [ 'debug', 'info', 'error' ]) },
-        { provide: FormBuilder, useValue: jasmine.createSpyObj('FormBuilder', [ 'group' ]) },
         { provide: AuthService, useValue: AuthServiceMock },
         { provide: ApiService, useValue: ApiServiceMock },
+        { provide: FormBuilder },
         { provide: MatDialog }
       ],
       declarations: [ AppointmentItemComponent ]
