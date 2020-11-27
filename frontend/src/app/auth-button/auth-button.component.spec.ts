@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthService } from '@auth0/auth0-angular';
 import { LogoutOptions } from '@auth0/auth0-spa-js';
@@ -19,7 +20,7 @@ describe('AuthButtonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [
-        { provide: Document, useValue: { location: { origin: 'http://localhost:4200' } } },
+        { provide: DOCUMENT, useValue: { location: { origin: 'http://localhost:4200' } } },
         { provide: AuthService, useValue: AuthServiceMock }
       ],
       declarations: [ AuthButtonComponent ]
