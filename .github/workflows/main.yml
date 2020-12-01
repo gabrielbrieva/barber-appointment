@@ -13,6 +13,20 @@ env:
   AWS_DEPLOY_REGION: us-east-1
 
 jobs:
+  angular-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: angular unit tests
+        working-directory: ./frontend
+        run: npm run test
+
   build:
     runs-on: ubuntu-latest
 
