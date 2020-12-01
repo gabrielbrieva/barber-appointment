@@ -51,7 +51,7 @@ jobs:
   backend-deploy:
     if: github.event_name == 'release'
 
-    needs: build
+    needs: backend-build
     runs-on: ubuntu-latest
 
     steps:
