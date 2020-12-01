@@ -42,8 +42,8 @@ A Postman collection file was provided ([resources/barber-appointment.postman_co
 ### CI/CD
 The automatization of build and deploy is managed by __GitHub Actions__ configured by main.yml file.
 
-* Build is triggered by each commit.
-* The AWS deploy action is triggered by relase tags.
+* The _backend-build_ Job is triggered by each push or pull request to _main_ branch.
+* And _backend-deploy_ Job (AWS deploy) is triggered by relase tags.
 
 #### Variables:
 
@@ -93,6 +93,10 @@ npm run start
 ```
 
 5. Start your browser at http://localhost:4200
+
+### CI
+
+The automatization of build and testing is managed by __GitHub Actions__ configured by main.yml file. The _frontend-build_ and _frontend-test_ Job is triggered by each push or pull request to _main_ branch.
 
 ## How this work
 
