@@ -13,7 +13,23 @@ env:
   AWS_DEPLOY_REGION: us-east-1
 
 jobs:
+
+  frontend-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: build frontend project
+        working-directory: ./frontend
+        run: npm run build
+
   frontend-test:
+    needs: frontend-build
     runs-on: ubuntu-latest
 
     steps:
