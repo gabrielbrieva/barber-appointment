@@ -25,7 +25,7 @@ jobs:
 
       - name: angular unit tests
         working-directory: ./frontend
-        run: npm run test
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
 
   build:
     runs-on: ubuntu-latest
