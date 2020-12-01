@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '@auth0/auth0-angular';
 import { LogoutOptions } from '@auth0/auth0-spa-js';
 import { of } from 'rxjs';
@@ -8,8 +9,8 @@ import { AuthButtonComponent } from './auth-button.component';
 const AuthServiceMock = {
   isAuthenticated$: of<boolean>(true),
   user$: of<any>({ name: 'John Snow', picture: 'path/to/user/picture'}),
-  logout: (options: LogoutOptions) => console.log(options),
-  loginWithRedirect: () => console.log('login with redirect...')
+  logout: (options: LogoutOptions) => {},
+  loginWithRedirect: () => {}
 };
 
 describe('AuthButtonComponent', () => {
@@ -18,8 +19,8 @@ describe('AuthButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ MatMenuModule ],
       providers: [
-        { provide: Document, useValue: { location: { origin: 'http://localhost:4200' } } },
         { provide: AuthService, useValue: AuthServiceMock }
       ],
       declarations: [ AuthButtonComponent ]

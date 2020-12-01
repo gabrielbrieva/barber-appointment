@@ -19,7 +19,7 @@ export class DrawerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // subscribe to sidenav toggle changed event
-    this.sideNavSrv.toggleChanged.subscribe(() => {
+    this.sidenavObserver = this.sideNavSrv.toggleChanged.subscribe(() => {
       this.sidenav.toggle();
     });
   }

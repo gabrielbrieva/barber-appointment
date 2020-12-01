@@ -8,7 +8,6 @@ import { BarberHistoriesComponent } from './barber-histories.component';
 import { of } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
 import { IAppointmentItem } from '../models/IAppointmentItem';
-import { IBarberHistory } from '../models/IBarberHistory';
 
 const AuthServiceMock = {
   isAuthenticated$: of<boolean>(true),
@@ -62,10 +61,11 @@ describe('BarberHistoriesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('load appointment items', done => {
+  it('load appointment items as barber histories', done => {
     component.histories$?.subscribe(items => {
       expect(items.length).toEqual(1);
       expect(items[0].barberName).toEqual('Dummy Barber');
+      expect(items[0].userName).toEqual('John Snow');
       done();
     });
   });

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
 
@@ -7,8 +7,14 @@ import { DOCUMENT } from '@angular/common';
   templateUrl: './auth-button.component.html',
   styleUrls: ['./auth-button.component.scss']
 })
-export class AuthButtonComponent {
+export class AuthButtonComponent implements OnInit {
 
-  constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService) { }
+  returnTo: string;
+
+  constructor(@Inject(DOCUMENT) private document: any, public auth: AuthService) { }
+
+  ngOnInit(): void {
+    this.returnTo = this.document.location.origin;
+  }
 
 }

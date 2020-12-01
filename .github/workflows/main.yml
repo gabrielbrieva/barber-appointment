@@ -13,7 +13,37 @@ env:
   AWS_DEPLOY_REGION: us-east-1
 
 jobs:
-  build:
+
+  frontend-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: build frontend project
+        working-directory: ./frontend
+        run: npm run build
+
+  frontend-test:
+    needs: frontend-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: angular unit tests
+        working-directory: ./frontend
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
+
+  backend-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,10 +64,10 @@ jobs:
         working-directory: ./backend
         run: npm run build
 
-  deploy:
+  backend-deploy:
     if: github.event_name == 'release'
 
-    needs: build
+    needs: backend-build
     runs-on: ubuntu-latest
 
     steps:

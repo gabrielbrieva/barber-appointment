@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -38,17 +38,17 @@ const ApiServiceMock = {
 describe('AppointmentItemComponent', () => {
   let component: AppointmentItemComponent;
   let fixture: ComponentFixture<AppointmentItemComponent>;
+  let httpController: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ MatDialogModule ],
+      imports: [ HttpClientTestingModule, MatDialogModule ],
       providers: [
         { provide: NGXLogger, useValue: jasmine.createSpyObj('NGXLogger', [ 'debug', 'info', 'error' ]) },
-        { provide: FormBuilder, useValue: jasmine.createSpyObj('FormBuilder', [ 'group' ]) },
         { provide: AuthService, useValue: AuthServiceMock },
         { provide: ApiService, useValue: ApiServiceMock },
-        { provide: MatDialog },
-        { provide: HttpClient }
+        { provide: FormBuilder },
+        { provide: MatDialog }
       ],
       declarations: [ AppointmentItemComponent ]
     })
@@ -56,6 +56,7 @@ describe('AppointmentItemComponent', () => {
   });
 
   beforeEach(() => {
+    httpController = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(AppointmentItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { AuthService } from '@auth0/auth0-angular';
 import { map } from 'rxjs/operators';
@@ -19,11 +19,15 @@ export class AppointmentListComponent implements OnInit {
   table: MatTable<IAppointmentItem>;
 
   items: IAppointmentItem[] = [];
+  isLoaded: EventEmitter<void> = new EventEmitter<void>();
 
   columnsToDisplay = [ 'isDone', 'service', 'barber', 'date', 'actions' ];
 
   expandedElement: IAppointmentItem = null;
   formGroup: FormGroup;
+
+  // testing purpose
+  deleteDialogRef: MatDialogRef<DeleteDialogComponent>;
 
   constructor(private logger: NGXLogger, private formBuilder: FormBuilder,
               private apiSrv: ApiService, private auth: AuthService, private dialog: MatDialog) {
@@ -32,6 +36,7 @@ export class AppointmentListComponent implements OnInit {
       this.logger.info(`Getting User Appointments...`);
       this.items = await this.apiSrv.getAppointmentsByUser(idToken);
       this.logger.debug(`User Appointments: ${JSON.stringify(this.items)}`);
+      this.isLoaded.emit();
     });
   }
 
@@ -41,9 +46,10 @@ export class AppointmentListComponent implements OnInit {
     });
   }
 
-  async delete(item: IAppointmentItem): Promise<void> {
+  delete(item: IAppointmentItem): void {
 
-    const dialogRef = this.dialog.open(DeleteDialogComponent);
+    const dialogRef: MatDialogRef<DeleteDialogComponent> = this.dialog.open(DeleteDialogComponent);
+    this.deleteDialogRef = dialogRef;
 
     const subs = dialogRef.componentInstance.accept.subscribe(() => {
       subs.unsubscribe();
@@ -70,6 +76,7 @@ export class AppointmentListComponent implements OnInit {
         }
 
         dialogRef.close();
+        this.deleteDialogRef = null;
       });
     });
   }

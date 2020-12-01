@@ -1,9 +1,9 @@
-<div *ngIf="isLoading;else formReview">
+<div *ngIf="isLoading; else formReview">
     <span>Updating appointment review...</span>
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
 <ng-template #formReview>
-    <form [formGroup]="formGroup">
+    <form *ngIf="data" [formGroup]="formGroup">
 
         <div class="result-container">
             <div class="before-container">
