@@ -11,7 +11,7 @@ export class AuthButtonComponent implements OnInit {
 
   returnTo: string;
 
-  constructor(@Inject(DOCUMENT) private document: Document, public auth: AuthService) { }
+  constructor(@Inject(DOCUMENT) private document: any, public auth: AuthService) { }
 
   ngOnInit(): void {
     this.returnTo = this.document.location.origin;
